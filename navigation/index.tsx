@@ -14,7 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 
-import Colors from "../constants/Colors";
+import Colors, { colors } from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import HomeScreen from "../screens/HomeScreen";
 import ModalScreen from "../screens/ModalScreen";
@@ -34,16 +34,9 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
-export default function Navigation({
-  colorScheme,
-}: {
-  colorScheme: ColorSchemeName;
-}) {
+export default function Navigation() {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer linking={LinkingConfiguration}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -57,7 +50,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: "white",
+      }}
+    >
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
@@ -79,7 +77,12 @@ const SimulatorStack = createNativeStackNavigator<SimulatorTabParamList>();
 
 function SimulatorStackScreen() {
   return (
-    <SimulatorStack.Navigator>
+    <SimulatorStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.white,
+      }}
+    >
       <SimulatorStack.Screen name="Simulator" component={SimulatorScreen} />
       <SimulatorStack.Screen
         name="SimulatorList"
@@ -118,7 +121,9 @@ function BottomTabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarStyle: { backgroundColor: colors.black },
+        tabBarActiveTintColor: colors.lightblue,
+        tabBarInactiveTintColor: colors.white,
       }}
     >
       <BottomTab.Screen
@@ -126,7 +131,7 @@ function BottomTabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerShown: true,
           headerRight: () => (
             <Pressable
@@ -150,7 +155,7 @@ function BottomTabNavigator() {
         component={SimulatorStackScreen}
         options={{
           title: "Simulator",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="tasks" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -158,7 +163,9 @@ function BottomTabNavigator() {
         component={TyperStackScreen}
         options={{
           title: "Typer",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="crosshairs" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -166,7 +173,9 @@ function BottomTabNavigator() {
         component={StatsScreen}
         options={{
           title: "Stats",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="area-chart" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>

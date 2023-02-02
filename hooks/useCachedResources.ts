@@ -15,6 +15,8 @@ export default function useCachedResources() {
         // Load fonts
         await Font.loadAsync({
           ...FontAwesome.font,
+          'baloo': require("../assets/fonts/Baloo2-Regular.ttf"),
+          'baloo-bold': require("../assets/fonts/Baloo2-SemiBold.ttf"),
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
       } catch (e) {
