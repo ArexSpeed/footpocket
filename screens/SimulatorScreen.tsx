@@ -1,20 +1,11 @@
 import { useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  Pressable,
-  FlatList,
-  SafeAreaView,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, FlatList, Text } from "react-native";
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
-
-interface LeagueItem {
-  name: string;
-}
+import Title from "../components/Title";
+import Tabs from "../components/Tabs";
+import Container from "../components/Container";
+import LeagueCard from "../components/LeagueCard";
 
 const data = [
   { id: "1", name: "Premier League" },
@@ -26,105 +17,47 @@ const data = [
   { id: "7", name: "Create new" },
 ];
 
-function LeagueItem({ name }: LeagueItem) {
-  return (
-    <LinearGradient
-      colors={colors.primaryGradient}
-      style={styles.leagueItem}
-      start={{ x: 0, y: 0.5 }}
-      end={{ x: 1, y: 0.5 }}
-    >
-      <View></View>
-      <Text style={styles.leagueText}>{name}</Text>
-    </LinearGradient>
-  );
-}
-
-function LeagueItemAdd() {
-  return (
-    <View style={styles.leagueItem}>
-      <View></View>
-      <Text style={styles.leagueText}>Create new</Text>
-    </View>
-  );
-}
-
 export default function SimulatorScreen({
   navigation,
 }: RootTabScreenProps<"Simulator">) {
   const [activeTab, setActiveTab] = useState("New");
 
-  function pressHandler() {
-    navigation.navigate("SimulatorList");
+  function navigateHandler(league: string) {
+    navigation.navigate("SimulatorList", {
+      league: league,
+    });
+  }
+
+  function activeTabHandler(tab: string) {
+    setActiveTab(tab);
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Choose your league game</Text>
-      <View style={styles.tabsContainer}>
-        <Pressable
-          style={[styles.tab, activeTab === "New" && styles.tabActive]}
-          onPress={() => setActiveTab("New")}
-        >
-          <Text style={styles.tabText}>NEW</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.tab, activeTab === "Saved" && styles.tabActive]}
-          onPress={() => setActiveTab("Saved")}
-        >
-          <Text style={styles.tabText}>SAVED</Text>
-        </Pressable>
-      </View>
-      {/* <View style={styles.leaguesContainer}> */}
+    <Container>
+      <Title>Choose your league</Title>
+      <Tabs
+        tab1="New"
+        tab2="Saved"
+        activeTab={activeTab}
+        onPress={activeTabHandler}
+      />
       <FlatList
         data={data}
-        renderItem={(itemData) => <LeagueItem name={itemData.item.name} />}
+        renderItem={(itemData) => (
+          <LeagueCard
+            name={itemData.item.name}
+            onPress={() => navigateHandler(itemData.item.name)}
+          />
+        )}
         keyExtractor={(item) => item.id}
         numColumns={2}
       />
-      {/* </View> */}
-      <Button title="List" onPress={pressHandler} />
-    </View>
+
+      {/* <Button title="List" onPress={pressHandler} /> */}
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: colors.background,
-    color: colors.white,
-  },
-  title: {
-    fontFamily: "baloo",
-    fontSize: 24,
-    color: colors.white,
-  },
-  tabsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "80%",
-    marginVertical: 16,
-    backgroundColor: colors.primary,
-    borderRadius: 4,
-    padding: 2,
-  },
-  tab: {
-    flex: 1,
-    alignItems: "center",
-    margin: 4,
-    borderRadius: 4,
-    backgroundColor: "transparent",
-  },
-  tabActive: {
-    backgroundColor: colors.secondary,
-  },
-  tabText: {
-    fontFamily: "baloo",
-    color: colors.white,
-    fontSize: 24,
-  },
   leaguesContainer: {
     flex: 1,
     flexDirection: "column",
@@ -133,7 +66,6 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   leagueItem: {
-    // flex: 0.5,
     justifyContent: "center",
     alignItems: "center",
     margin: 8,
@@ -145,6 +77,9 @@ const styles = StyleSheet.create({
   leagueText: {
     fontSize: 16,
     fontFamily: "baloo",
+    color: colors.white,
+  },
+  loading: {
     color: colors.white,
   },
 });

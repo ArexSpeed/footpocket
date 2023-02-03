@@ -136,13 +136,14 @@ const TEAMS = [
 
 export default function SimulatorListScreen({
   navigation,
+  route,
 }: RootTabScreenProps<"SimulatorList">) {
   function pressHandler() {
     navigation.navigate("SimulatorGame");
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Premier League</Text>
+      <Text style={styles.title}>{route.params?.league}</Text>
       <ScrollView style={styles.scrollView}>
         {TEAMS.map((team) => (
           <View style={styles.teamBox} key={team.name}>

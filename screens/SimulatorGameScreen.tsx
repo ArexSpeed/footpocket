@@ -1,31 +1,30 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import Container from "../components/Container";
+import Tabs from "../components/Tabs";
+import Title from "../components/Title";
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
 
 export default function SimulatorGameScreen({
   navigation,
 }: RootTabScreenProps<"SimulatorGame">) {
-  const [view, setView] = useState("Schedule");
+  const [activeTab, setActiveTab] = useState("Schedule");
+
+  function activeTabHandler(tab: string) {
+    setActiveTab(tab);
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Premier League</Text>
-      <View style={styles.tabsContainer}>
-        <Pressable
-          style={[styles.tab, view === "Schedule" && styles.tabActive]}
-          onPress={() => setView("Schedule")}
-        >
-          <Text style={styles.tabText}>SCHEDULE</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.tab, view === "STANDING" && styles.tabActive]}
-          onPress={() => setView("STANDING")}
-        >
-          <Text style={styles.tabText}>STANDING</Text>
-        </Pressable>
-      </View>
-      {view === "Schedule" ? (
+    <Container>
+      <Title>Premier League</Title>
+      <Tabs
+        tab1="Schedule"
+        tab2="Tables"
+        activeTab={activeTab}
+        onPress={activeTabHandler}
+      />
+      {activeTab === "Schedule" ? (
         <ScrollView style={styles.schedule}>
           {/* Round1 */}
           <LinearGradient
@@ -125,48 +124,11 @@ export default function SimulatorGameScreen({
           </View>
         </ScrollView>
       )}
-    </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: colors.background,
-    color: colors.white,
-  },
-  title: {
-    fontFamily: "baloo",
-    fontSize: 24,
-    color: colors.white,
-  },
-  tabsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "80%",
-    marginVertical: 16,
-    backgroundColor: colors.primary,
-    borderRadius: 4,
-    padding: 2,
-  },
-  tab: {
-    flex: 1,
-    alignItems: "center",
-    margin: 4,
-    borderRadius: 4,
-    backgroundColor: "transparent",
-  },
-  tabActive: {
-    backgroundColor: colors.secondary,
-  },
-  tabText: {
-    fontFamily: "baloo-bold",
-    color: colors.white,
-    fontSize: 24,
-  },
   schedule: {
     flex: 1,
     flexDirection: "column",

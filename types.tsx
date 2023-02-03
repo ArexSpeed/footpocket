@@ -30,7 +30,11 @@ export type RootTabParamList = {
   Home: undefined;
   SimulatorRoot: SimulatorTabParamList;
   Simulator: undefined;
-  SimulatorList: undefined;
+  SimulatorList:
+    | {
+        league: string;
+      }
+    | undefined;
   SimulatorGame: undefined;
   TyperRoot: TyperTabParamList;
   TyperMain: undefined;
