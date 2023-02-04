@@ -100,7 +100,12 @@ const TyperStack = createNativeStackNavigator<TyperTabParamList>();
 
 function TyperStackScreen() {
   return (
-    <TyperStack.Navigator>
+    <TyperStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.white,
+      }}
+    >
       <TyperStack.Screen name="TyperMain" component={TyperScreen} />
       <TyperStack.Screen name="TyperLeague" component={TyperLeagueScreen} />
     </TyperStack.Navigator>
