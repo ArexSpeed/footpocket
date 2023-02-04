@@ -66,7 +66,12 @@ export default function TyperScreen({
             end={{ x: 1, y: 0.5 }}
           >
             <Text style={styles.text}>Premier League</Text>
-            <Text style={styles.textGray}>18 members</Text>
+            <View style={styles.gameRow}>
+              <Pressable style={styles.joinBtn}>
+                <Text style={styles.text}>Join</Text>
+              </Pressable>
+              <Text style={styles.textGray}>18 members</Text>
+            </View>
           </LinearGradient>
         </Pressable>
         <Pressable>
@@ -122,5 +127,12 @@ const styles = StyleSheet.create({
     color: colors.gray,
     fontSize: 12,
     fontFamily: "baloo-bold",
+  },
+  joinBtn: {
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    borderRadius: 2,
+    backgroundColor: colors.blue,
+    marginRight: 8,
   },
 });
