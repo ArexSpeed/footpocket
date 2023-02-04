@@ -6,10 +6,23 @@ import {
   Text,
   View,
   Pressable,
+  Modal,
 } from "react-native";
+import { useState } from "react";
+import Container from "../components/Container";
+import Title from "../components/Title";
+import TeamListItem from "../components/TeamListItem";
 
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
+import Slider from "@react-native-community/slider";
+
+interface Team {
+  name: string;
+  att: number;
+  mid: number;
+  def: number;
+}
 
 const TEAMS = [
   {
@@ -138,134 +151,211 @@ export default function SimulatorListScreen({
   navigation,
   route,
 }: RootTabScreenProps<"SimulatorList">) {
+  const [editTeamValue, setEditTeamValue] = useState<Team>({
+    name: "",
+    att: 0,
+    mid: 0,
+    def: 0,
+  });
+  const [editModal, setEditModal] = useState(false);
   function pressHandler() {
     navigation.navigate("SimulatorGame");
   }
+
+  function editHandler(team: Team) {
+    setEditModal(true);
+    setEditTeamValue(team);
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{route.params?.league}</Text>
+    <Container>
+      <Title>{route.params ? route.params.league : ""}</Title>
       <ScrollView style={styles.scrollView}>
-        {TEAMS.map((team) => (
-          <View style={styles.teamBox} key={team.name}>
-            <View>
-              <TextInput style={styles.textInputItem} value={team.name} />
-            </View>
-            <View style={styles.skillsBox}>
-              <View style={styles.skillBox}>
-                <Pressable style={styles.minus}>
-                  <Text style={styles.btnText}>-</Text>
-                </Pressable>
-                <Text style={styles.skill}>{team.att}</Text>
-                <Pressable style={styles.plus}>
-                  <Text style={styles.btnText}>+</Text>
-                </Pressable>
-              </View>
-              <View style={styles.skillBox}>
-                <Pressable style={styles.minus}>
-                  <Text style={styles.btnText}>-</Text>
-                </Pressable>
-                <Text style={styles.skill}>{team.mid}</Text>
-                <Pressable style={styles.plus}>
-                  <Text style={styles.btnText}>+</Text>
-                </Pressable>
-              </View>
-              <View style={styles.skillBox}>
-                <Pressable style={styles.minus}>
-                  <Text style={styles.btnText}>-</Text>
-                </Pressable>
-                <Text style={styles.skill}>{team.def}</Text>
-                <Pressable style={styles.plus}>
-                  <Text style={styles.btnText}>+</Text>
-                </Pressable>
-              </View>
-            </View>
+        <View style={styles.teamTitle}>
+          <View>
+            <Text style={styles.teamTitleText}>Name</Text>
           </View>
+          <View style={styles.teamTitleSkills}>
+            <Text style={styles.teamTitleText}>F</Text>
+            <Text style={styles.teamTitleText}>M</Text>
+            <Text style={styles.teamTitleText}>D</Text>
+          </View>
+        </View>
+        {TEAMS.map((team) => (
+          // <TeamListItem key={team.name} team={team} />
+          <Pressable key={team.name} onPress={() => editHandler(team)}>
+            <TeamListItem key={team.name} team={team} />
+          </Pressable>
         ))}
       </ScrollView>
+      <Modal visible={editModal}>
+        <View style={styles.modalView}>
+          <View style={styles.label}>
+            <Text style={styles.labelTitle}>Team name:</Text>
+            <TextInput style={styles.labelInput} value={editTeamValue.name} />
+          </View>
+          <View style={styles.skillBox}>
+            <Text style={styles.skillBoxTitle}>Forward:</Text>
+            <Text style={styles.skillBoxValue}>{editTeamValue.att}</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              maximumTrackTintColor="#FFFFFF"
+              value={editTeamValue.att}
+              //onSlidingComplete={(value) => console.log(value)}
+              onValueChange={(value) =>
+                setEditTeamValue({ ...editTeamValue, att: value })
+              }
+            />
+          </View>
+          <View style={styles.skillBox}>
+            <Text style={styles.skillBoxTitle}>Midfield:</Text>
+            <Text style={styles.skillBoxValue}>{editTeamValue.mid}</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              maximumTrackTintColor="#FFFFFF"
+              value={editTeamValue.mid}
+              onValueChange={(value) =>
+                setEditTeamValue({ ...editTeamValue, mid: value })
+              }
+            />
+          </View>
+          <View style={styles.skillBox}>
+            <Text style={styles.skillBoxTitle}>Defence:</Text>
+            <Text style={styles.skillBoxValue}>{editTeamValue.def}</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              maximumTrackTintColor="#FFFFFF"
+              value={editTeamValue.def}
+              onValueChange={(value) =>
+                setEditTeamValue({ ...editTeamValue, def: value })
+              }
+            />
+          </View>
+          <View style={styles.modalButtons}>
+            <Pressable
+              style={styles.updateBtn}
+              onPress={() => setEditModal(false)}
+            >
+              <Text style={styles.startText}>UPDATE</Text>
+            </Pressable>
+            <Pressable
+              style={styles.cancelBtn}
+              onPress={() => setEditModal(false)}
+            >
+              <Text style={styles.startText}>CANCEL</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <Pressable style={styles.startBtn} onPress={pressHandler}>
         <Text style={styles.startText}>START</Text>
       </Pressable>
-    </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: colors.background,
-    color: colors.white,
-  },
-  title: {
-    fontFamily: "baloo",
-    fontSize: 24,
-    color: colors.white,
+  slider: {
+    width: 200,
+    height: 48,
   },
   scrollView: {
     width: "100%",
     marginHorizontal: 20,
     padding: 8,
   },
-  teamBox: {
+  teamTitle: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     padding: 4,
-    backgroundColor: colors.primary,
-    borderRadius: 4,
-    marginBottom: 8,
+    backgroundColor: "transparent",
+    marginBottom: 4,
   },
-  textInputItem: {
-    fontFamily: "baloo-bold",
-    fontSize: 20,
-    width: 200,
-    //maxWidth: "50%",
+  teamTitleSkills: {
+    flexDirection: "row",
+  },
+  teamTitleText: {
+    fontSize: 16,
+    fontFamily: "baloo",
+    color: colors.gray,
+    paddingHorizontal: 8,
+  },
+  modalView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.background,
     color: colors.white,
   },
-  skillsBox: {
-    flexDirection: "row",
+
+  label: {
+    flexDirection: "column",
+    width: "100%",
+    padding: 8,
+  },
+  labelTitle: {
+    fontSize: 16,
+    fontFamily: "baloo",
+    color: colors.gray,
+  },
+  labelInput: {
+    fontFamily: "baloo-bold",
+    fontSize: 20,
+    padding: 8,
+    color: colors.white,
+    backgroundColor: colors.darkgray,
+    borderRadius: 8,
   },
   skillBox: {
+    flexDirection: "column",
+    padding: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.darkgray,
+    borderRadius: 4,
+    elevation: 4,
+    margin: 8,
+  },
+  skillBoxTitle: {
+    fontSize: 16,
+    fontFamily: "baloo",
+    color: colors.gray,
+  },
+  skillBoxValue: {
+    fontSize: 32,
+    fontFamily: "baloo-bold",
+    color: colors.white,
+  },
+  modalButtons: {
     flexDirection: "row",
-    paddingHorizontal: 4,
     alignItems: "center",
   },
-  skill: {
-    fontFamily: "baloo-bold",
-    fontSize: 20,
-    color: colors.white,
+  updateBtn: {
+    backgroundColor: colors.lightblue,
+    padding: 8,
+    borderRadius: 8,
+    margin: 4,
   },
-  plus: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.green,
-    color: colors.white,
-    width: 12,
-    height: 12,
-    margin: 2,
-    border: 0,
-  },
-  minus: {
-    justifyContent: "center",
-    alignItems: "center",
+  cancelBtn: {
     backgroundColor: colors.red,
-    color: colors.white,
-    width: 12,
-    height: 12,
-    margin: 2,
-    border: 0,
-  },
-  btnText: {
-    color: colors.white,
-    fontSize: 12,
-    fontFamily: "baloo-bold",
+    padding: 8,
+    borderRadius: 8,
+    margin: 4,
   },
   startBtn: {
     backgroundColor: colors.green,
     padding: 8,
-    borderRadius: 50,
+    borderRadius: 8,
     margin: 4,
   },
   startText: {
