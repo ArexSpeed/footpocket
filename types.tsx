@@ -45,6 +45,11 @@ export type RootTabParamList = {
     | undefined;
   Typer: undefined;
   Stats: undefined;
+  StatsTable:
+    | {
+        league: string;
+      }
+    | undefined;
 };
 
 export type SimulatorTabParamList = {
@@ -56,6 +61,11 @@ export type SimulatorTabParamList = {
 export type TyperTabParamList = {
   TyperMain: undefined;
   TyperLeague: undefined;
+};
+
+export type StatsTabParamList = {
+  Stats: undefined;
+  StatsTable: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

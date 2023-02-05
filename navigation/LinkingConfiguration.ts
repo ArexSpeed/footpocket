@@ -36,6 +36,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           Stats: {
             screens: {
               Stats: 'stats',
+              StatsTable: 'stats table',
             },
           },
         },

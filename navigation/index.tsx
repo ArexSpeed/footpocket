@@ -23,6 +23,7 @@ import SimulatorGameScreen from "../screens/SimulatorGameScreen";
 import SimulatorListScreen from "../screens/SimulatorListScreen";
 import SimulatorScreen from "../screens/SimulatorScreen";
 import StatsScreen from "../screens/StatsScreen";
+import StatsTableScreen from "../screens/StatsTableScreen";
 import TyperLeagueScreen from "../screens/TyperLeagueScreen";
 import TyperScreen from "../screens/TyperScreen";
 import {
@@ -30,6 +31,7 @@ import {
   RootTabParamList,
   RootTabScreenProps,
   SimulatorTabParamList,
+  StatsTabParamList,
   TyperTabParamList,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
@@ -112,6 +114,22 @@ function TyperStackScreen() {
   );
 }
 
+const StatsStack = createNativeStackNavigator<StatsTabParamList>();
+
+function StatsStackScreen() {
+  return (
+    <StatsStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.white,
+      }}
+    >
+      <StatsStack.Screen name="Stats" component={StatsScreen} />
+      <StatsStack.Screen name="StatsTable" component={StatsTableScreen} />
+    </StatsStack.Navigator>
+  );
+}
+
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
@@ -175,7 +193,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Stats"
-        component={StatsScreen}
+        component={StatsStackScreen}
         options={{
           title: "Stats",
           tabBarIcon: ({ color }) => (
