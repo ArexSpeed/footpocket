@@ -8,7 +8,7 @@ import {
   Pressable,
   Modal,
 } from "react-native";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Container from "../components/Container";
 import Title from "../components/Title";
 import TeamListItem from "../components/TeamListItem";
@@ -16,148 +16,38 @@ import TeamListItem from "../components/TeamListItem";
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
 import Slider from "@react-native-community/slider";
+import teamsData from "../data/teams.json";
 
 interface Team {
+  id: string;
   name: string;
   att: number;
   mid: number;
   def: number;
 }
 
-const TEAMS = [
-  {
-    name: "Liverpool",
-    att: 87,
-    mid: 83,
-    def: 85,
-  },
-  {
-    name: "ManCity",
-    att: 87,
-    mid: 87,
-    def: 83,
-  },
-  {
-    name: "Borussia Moechengladbach",
-    att: 79,
-    mid: 79,
-    def: 80,
-  },
-  {
-    name: "Chelsea",
-    att: 80,
-    mid: 83,
-    def: 81,
-  },
-  {
-    name: "Manchester United",
-    att: 83,
-    mid: 80,
-    def: 80,
-  },
-  {
-    name: "Wolves",
-    att: 79,
-    mid: 79,
-    def: 77,
-  },
-  {
-    name: "Spurs",
-    att: 86,
-    mid: 82,
-    def: 82,
-  },
-  {
-    name: "Arsenal",
-    att: 84,
-    mid: 82,
-    def: 78,
-  },
-  {
-    name: "Everton",
-    att: 80,
-    mid: 78,
-    def: 79,
-  },
-  {
-    name: "WestHam",
-    att: 82,
-    mid: 78,
-    def: 72,
-  },
-  {
-    name: "Watford",
-    att: 76,
-    mid: 78,
-    def: 75,
-  },
-  {
-    name: "Newcastle",
-    att: 76,
-    mid: 77,
-    def: 77,
-  },
-  {
-    name: "Crystal",
-    att: 73,
-    mid: 77,
-    def: 76,
-  },
-  {
-    name: "Bournemouth",
-    att: 78,
-    mid: 76,
-    def: 76,
-  },
-  {
-    name: "Burnley",
-    att: 77,
-    mid: 76,
-    def: 76,
-  },
-  {
-    name: "AstonVilla",
-    att: 77,
-    mid: 75,
-    def: 75,
-  },
-  {
-    name: "Brighton",
-    att: 76,
-    mid: 77,
-    def: 76,
-  },
-  {
-    name: "Southampton",
-    att: 75,
-    mid: 76,
-    def: 76,
-  },
-  {
-    name: "SheffieldUtd",
-    att: 73,
-    mid: 76,
-    def: 75,
-  },
-  {
-    name: "Norwich",
-    att: 76,
-    mid: 74,
-    def: 72,
-  },
-];
-
 export default function SimulatorListScreen({
   navigation,
   route,
 }: RootTabScreenProps<"SimulatorList">) {
+  const [teams, setTeams] = useState<Team[] | undefined>([]);
   const [editTeamValue, setEditTeamValue] = useState<Team>({
+    id: "",
     name: "",
     att: 0,
     mid: 0,
     def: 0,
   });
   const [editModal, setEditModal] = useState(false);
+
+  useLayoutEffect(() => {
+    if (route.params?.league) {
+      const selectedTeams = teamsData.find(
+        (item) => item.leagueName === route.params?.league
+      );
+      setTeams(selectedTeams?.teams);
+    }
+  }, [route]);
   function pressHandler() {
     navigation.navigate("SimulatorGame");
   }
@@ -180,8 +70,7 @@ export default function SimulatorListScreen({
             <Text style={styles.teamTitleText}>D</Text>
           </View>
         </View>
-        {TEAMS.map((team) => (
-          // <TeamListItem key={team.name} team={team} />
+        {teams?.map((team) => (
           <Pressable key={team.name} onPress={() => editHandler(team)}>
             <TeamListItem key={team.name} team={team} />
           </Pressable>

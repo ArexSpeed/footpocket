@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -13,14 +13,31 @@ import Tabs from "../components/Tabs";
 import Title from "../components/Title";
 import { RootTabScreenProps } from "../types";
 import { colors } from "../constants/Colors";
+import typerData from "../data/typer.json";
+
+interface Table {
+  userId: string;
+  userName: string;
+  points: number;
+}
 
 export default function TyperLeagueScreen({
   navigation,
   route,
 }: RootTabScreenProps<"TyperLeague">) {
-  const [activeTab, setActiveTab] = useState("Scores");
+  const [activeTab, setActiveTab] = useState("Tables");
   const [betModal, setBetModal] = useState(false);
   const [gameDetailModal, setGameDetailModal] = useState(false);
+  const [tableData, setTableData] = useState<Table[] | undefined>([]);
+
+  useLayoutEffect(() => {
+    if (route.params?.league) {
+      const selectedMembers = typerData.find(
+        (item) => item.leagueName === route.params?.league
+      );
+      setTableData(selectedMembers?.table);
+    }
+  }, [route]);
 
   function activeTabHandler(tab: string) {
     setActiveTab(tab);
@@ -100,26 +117,24 @@ export default function TyperLeagueScreen({
               <Text style={styles.th}>PT</Text>
             </View>
           </LinearGradient>
-          <View style={[styles.tableRow, styles.tableRowOdd]}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.tr}>1</Text>
-              <Text style={styles.tr}>Speed</Text>
+          {tableData?.map((item, i) => (
+            <View
+              key={item.userId}
+              style={[
+                styles.tableRow,
+                i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+              ]}
+            >
+              <View style={styles.rowContainer}>
+                <Text style={styles.tr}>{i + 1}</Text>
+                <Text style={styles.tr}>{item.userName}</Text>
+              </View>
+              <View style={styles.rowContainer}>
+                <Text style={styles.trSmall}>15</Text>
+                <Text style={styles.tr}>{item.points}</Text>
+              </View>
             </View>
-            <View style={styles.rowContainer}>
-              <Text style={styles.trSmall}>15</Text>
-              <Text style={styles.tr}>310</Text>
-            </View>
-          </View>
-          <View style={[styles.tableRow, styles.tableRowEven]}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.tr}>2</Text>
-              <Text style={styles.tr}>Arex95</Text>
-            </View>
-            <View style={styles.rowContainer}>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.tr}>302</Text>
-            </View>
-          </View>
+          ))}
         </ScrollView>
       )}
       {/* Modal for BET */}

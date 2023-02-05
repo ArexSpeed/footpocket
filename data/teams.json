@@ -1,0 +1,440 @@
+[
+    {
+        "leagueId": "1",
+        "leagueName": "Premier League",
+        "teams": [
+            {
+                "id": "e1",
+                "name": "Liverpool",
+                "att": 87,
+                "mid": 83,
+                "def": 85
+            },
+            {
+                "id": "e2",
+                "name": "ManCity",
+                "att": 87,
+                "mid": 87,
+                "def": 83
+            },
+            {
+                "id": "e3",
+                "name": "Leicester",
+                "att": 79,
+                "mid": 79,
+                "def": 80
+            },
+            {
+                "id": "e4",
+                "name": "Chelsea",
+                "att": 80,
+                "mid": 83,
+                "def": 81
+            },
+            {
+                "id": "e5",
+                "name": "ManUnited",
+                "att": 83,
+                "mid": 80,
+                "def": 80
+            },
+            {
+                "id": "e6",
+                "name": "Wolves",
+                "att": 79,
+                "mid": 79,
+                "def": 77
+            },
+            {
+                "id": "e7",
+                "name": "Spurs",
+                "att": 86,
+                "mid": 82,
+                "def": 82
+            },
+            {
+                "id": "e8",
+                "name": "Arsenal",
+                "att": 84,
+                "mid": 82,
+                "def": 78
+            },
+            {
+                "id": "e9",
+                "name": "Everton",
+                "att": 80,
+                "mid": 78,
+                "def": 79
+            },
+            {
+                "id": "e10",
+                "name": "WestHam",
+                "att": 82,
+                "mid": 78,
+                "def": 72
+            },
+            {
+                "id": "e11",
+                "name": "Nottingham",
+                "att": 76,
+                "mid": 78,
+                "def": 75
+            },
+            {
+                "id": "e12",
+                "name": "Newcastle",
+                "att": 76,
+                "mid": 77,
+                "def": 77
+            },
+            {
+                "id": "e13",
+                "name": "Crystal",
+                "att": 73,
+                "mid": 77,
+                "def": 76
+            },
+            {
+                "id": "e14",
+                "name": "Bournemouth",
+                "att": 78,
+                "mid": 76,
+                "def": 76
+            },
+            {
+                "id": "e15",
+                "name": "Brendford",
+                "att": 77,
+                "mid": 76,
+                "def": 76
+            },
+            {
+                "id": "e16",
+                "name": "Aston Villa",
+                "att": 77,
+                "mid": 75,
+                "def": 75
+            },
+            {
+                "id": "e17",
+                "name": "Brighton",
+                "att": 76,
+                "mid": 77,
+                "def": 76
+            },
+            {
+                "id": "e18",
+                "name": "Southampton",
+                "att": 75,
+                "mid": 76,
+                "def": 76
+            },
+            {
+                "id": "e19",
+                "name": "Leeds",
+                "att": 73,
+                "mid": 76,
+                "def": 75
+            },
+            {
+                "id": "e20",
+                "name": "Fulham",
+                "att": 76,
+                "mid": 74,
+                "def": 72
+            }
+        ]
+    },
+    {
+        "leagueId": "2",
+        "leagueName": "La Liga",
+        "teams": [
+            {
+                "id": "s1",
+                "name": "Barcelona",
+                "att": 88,
+                "mid": 85,
+                "def": 85
+            },
+            {
+                "id": "s2",
+                "name": "Real Madryt",
+                "att": 85,
+                "mid": 87,
+                "def": 85
+            },
+            {
+                "id": "s3",
+                "name": "Atletico",
+                "att": 81,
+                "mid": 83,
+                "def": 82
+            },
+            {
+                "id": "s4",
+                "name": "Valencia",
+                "att": 81,
+                "mid": 81,
+                "def": 81
+            },
+            {
+                "id": "s5",
+                "name": "Real Betis",
+                "att": 81,
+                "mid": 81,
+                "def": 78
+            },
+            {
+                "id": "s6",
+                "name": "Sevilla",
+                "att": 79,
+                "mid": 81,
+                "def": 80
+            },
+            {
+                "id": "s7",
+                "name": "Real Sociedad",
+                "att": 81,
+                "mid": 80,
+                "def": 78
+            },
+            {
+                "id": "s8",
+                "name": "Villarreal",
+                "att": 80,
+                "mid": 79,
+                "def": 78
+            },
+            {
+                "id": "s9",
+                "name": "Athletic Bilbao",
+                "att": 79,
+                "mid": 79,
+                "def": 80
+            },
+            {
+                "id": "s10",
+                "name": "Getafe",
+                "att": 80,
+                "mid": 77,
+                "def": 78
+            },
+            {
+                "id": "s11",
+                "name": "Celta Vigo",
+                "att": 79,
+                "mid": 77,
+                "def": 76
+            },
+            {
+                "id": "s12",
+                "name": "Elche",
+                "att": 78,
+                "mid": 78,
+                "def": 75
+            },
+            {
+                "id": "s13",
+                "name": "Almeria",
+                "att": 77,
+                "mid": 78,
+                "def": 76
+            },
+            {
+                "id": "s14",
+                "name": "Real Valladolid",
+                "att": 76,
+                "mid": 76,
+                "def": 73
+            },
+            {
+                "id": "s15",
+                "name": "Cadiz",
+                "att": 76,
+                "mid": 75,
+                "def": 76
+            },
+            {
+                "id": "s16",
+                "name": "Girona",
+                "att": 76,
+                "mid": 74,
+                "def": 75
+            },
+            {
+                "id": "s17",
+                "name": "Ossasuna",
+                "att": 75,
+                "mid": 75,
+                "def": 75
+            },
+            {
+                "id": "s18",
+                "name": "Rayo Vallecano",
+                "att": 76,
+                "mid": 74,
+                "def": 73
+            },
+            {
+                "id": "s19",
+                "name": "Mallorca",
+                "att": 76,
+                "mid": 73,
+                "def": 72
+            },
+            {
+                "id": "s20",
+                "name": "Espanyol",
+                "att": 76,
+                "mid": 73,
+                "def": 72
+            }
+        ]
+    },
+    {
+        "leagueId": "3",
+        "leagueName": "Serie A",
+        "teams": [
+            {
+                "id": "i1",
+                "name": "Juventus",
+                "att": 89,
+                "mid": 84,
+                "def": 85
+            },
+            {
+                "id": "i2",
+                "name": "Napoli",
+                "att": 84,
+                "mid": 81,
+                "def": 81
+            },
+            {
+                "id": "i3",
+                "name": "Inter",
+                "att": 83,
+                "mid": 80,
+                "def": 86
+            },
+            {
+                "id": "i4",
+                "name": "Lazio",
+                "att": 82,
+                "mid": 81,
+                "def": 80
+            },
+            {
+                "id": "i5",
+                "name": "Milan",
+                "att": 85,
+                "mid": 78,
+                "def": 79
+            },
+            {
+                "id": "i6",
+                "name": "Roma",
+                "att": 84,
+                "mid": 78,
+                "def": 78
+            },
+            {
+                "id": "i7",
+                "name": "Atalanta",
+                "att": 82,
+                "mid": 79,
+                "def": 77
+            },
+            {
+                "id": "i8",
+                "name": "Torino",
+                "att": 79,
+                "mid": 76,
+                "def": 78
+            },
+            {
+                "id": "i9",
+                "name": "Spezia",
+                "att": 78,
+                "mid": 76,
+                "def": 73
+            },
+            {
+                "id": "i10",
+                "name": "Fiorentina",
+                "att": 76,
+                "mid": 74,
+                "def": 75
+            },
+            {
+                "id": "i11",
+                "name": "Monza",
+                "att": 75,
+                "mid": 74,
+                "def": 75
+            },
+            {
+                "id": "i12",
+                "name": "Bologna",
+                "att": 74,
+                "mid": 76,
+                "def": 74
+            },
+            {
+                "id": "i13",
+                "name": "Sampdoria",
+                "att": 78,
+                "mid": 74,
+                "def": 73
+            },
+            {
+                "id": "i14",
+                "name": "Sassuolo",
+                "att": 76,
+                "mid": 74,
+                "def": 71
+            },
+            {
+                "id": "i15",
+                "name": "Udinese",
+                "att": 75,
+                "mid": 75,
+                "def": 74
+            },
+            {
+                "id": "i16",
+                "name": "Salernitana",
+                "att": 74,
+                "mid": 74,
+                "def": 72
+            },
+            {
+                "id": "i17",
+                "name": "Hellas Verona",
+                "att": 73,
+                "mid": 75,
+                "def": 73
+            },
+            {
+                "id": "i18",
+                "name": "Empoli",
+                "att": 75,
+                "mid": 72,
+                "def": 72
+            },
+            {
+                "id": "i19",
+                "name": "Cremonese",
+                "att": 75,
+                "mid": 73,
+                "def": 70
+            },
+            {
+                "id": "i20",
+                "name": "Lecce",
+                "att": 72,
+                "mid": 71,
+                "def": 72
+            }
+        ]
+    }
+]

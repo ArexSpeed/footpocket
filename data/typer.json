@@ -1,0 +1,59 @@
+[
+    {
+        "leagueId": "1",
+        "leagueName": "Cap",
+        "table": [
+            {
+                "userId": "1",
+                "userName": "Arex",
+                "points": 320
+            },
+            {
+                "userId": "2",
+                "userName": "Speed",
+                "points": 300
+            },
+            {
+                "userId": "3",
+                "userName": "Arje",
+                "points": 290
+            },
+            {
+                "userId": "4",
+                "userName": "Kiko",
+                "points": 280
+            }
+        ]
+    },
+    {
+        "leagueId": "2",
+        "leagueName": "England",
+        "table": [
+            {
+                "userId": "1",
+                "userName": "Noem",
+                "points": 320
+            },
+            {
+                "userId": "2",
+                "userName": "Tracy",
+                "points": 300
+            },
+            {
+                "userId": "3",
+                "userName": "Igo",
+                "points": 290
+            },
+            {
+                "userId": "4",
+                "userName": "Mikel",
+                "points": 280
+            },
+            {
+                "userId": "5",
+                "userName": "Angel",
+                "points": 250
+            }
+        ]
+    }
+]

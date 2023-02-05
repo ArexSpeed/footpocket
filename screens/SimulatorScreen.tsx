@@ -6,21 +6,20 @@ import Title from "../components/Title";
 import Tabs from "../components/Tabs";
 import Container from "../components/Container";
 import LeagueCard from "../components/LeagueCard";
-
-const data = [
-  { id: "1", name: "Premier League" },
-  { id: "2", name: "Bundesliga" },
-  { id: "3", name: "La Liga" },
-  { id: "4", name: "Ekstraklasa" },
-  { id: "5", name: "Serie A" },
-  { id: "6", name: "Atland" },
-  { id: "7", name: "Create new" },
-];
+import data from "../data/teams.json";
 
 export default function SimulatorScreen({
   navigation,
 }: RootTabScreenProps<"Simulator">) {
   const [activeTab, setActiveTab] = useState("New");
+
+  const randId = Math.floor(Math.random() * 10000).toString();
+
+  const ownLeagueData = {
+    leagueId: randId,
+    leagueName: "Create own league",
+    teams: [],
+  };
 
   function navigateHandler(league: string) {
     navigation.navigate("SimulatorList", {
@@ -33,7 +32,7 @@ export default function SimulatorScreen({
   }
   return (
     <Container>
-      <Title>Choose your league</Title>
+      <Title>Choose your game</Title>
       <Tabs
         tab1="New"
         tab2="Saved"
@@ -41,14 +40,14 @@ export default function SimulatorScreen({
         onPress={activeTabHandler}
       />
       <FlatList
-        data={data}
+        data={[...data, ownLeagueData]}
         renderItem={(itemData) => (
           <LeagueCard
-            name={itemData.item.name}
-            onPress={() => navigateHandler(itemData.item.name)}
+            name={itemData.item.leagueName}
+            onPress={() => navigateHandler(itemData.item.leagueName)}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.leagueId}
         numColumns={2}
       />
 

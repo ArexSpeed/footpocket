@@ -12,6 +12,7 @@ import Container from "../components/Container";
 import Title from "../components/Title";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../constants/Colors";
+import typerData from "../data/typer.json";
 
 export default function TyperScreen({
   navigation,
@@ -32,28 +33,23 @@ export default function TyperScreen({
             <Text style={styles.text}>Create New</Text>
           </Pressable>
         </View>
-        <Pressable onPress={() => navigateHandler("Premier League")}>
-          <LinearGradient
-            colors={colors.primaryGradient}
-            style={styles.titleRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
+        {typerData.map((item) => (
+          <Pressable
+            key={item.leagueId}
+            onPress={() => navigateHandler(item.leagueName)}
           >
-            <Text style={styles.text}>Premier League</Text>
-            <Text style={styles.textGray}>18 members</Text>
-          </LinearGradient>
-        </Pressable>
-        <Pressable>
-          <LinearGradient
-            colors={colors.primaryGradient}
-            style={styles.titleRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Bundesliga</Text>
-            <Text style={styles.textGray}>8 members</Text>
-          </LinearGradient>
-        </Pressable>
+            <LinearGradient
+              colors={colors.primaryGradient}
+              style={styles.titleRow}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+            >
+              <Text style={styles.text}>{item.leagueName}</Text>
+              <Text style={styles.textGray}>{item.table.length} members</Text>
+            </LinearGradient>
+          </Pressable>
+        ))}
+
         <View style={{ marginTop: 16 }}></View>
         <View style={styles.titleRow}>
           <Text style={styles.text}>Open Leagues</Text>
