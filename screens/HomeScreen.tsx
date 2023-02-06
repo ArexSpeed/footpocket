@@ -1,20 +1,23 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
+import AuthContent from "../components/auth/AuthContent";
+import Container from "../components/Container";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import UserCard from "../components/UserCard";
 import { RootTabScreenProps } from "../types";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+  const [isLogged, setIsLogged] = useState(false);
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/HomeScreen.tsx" />
-    </View>
+    <Container>
+      {isLogged ? (
+        <UserCard />
+      ) : (
+        <AuthContent isLogin={true} onAuthenticate="" />
+      )}
+    </Container>
   );
 }
 

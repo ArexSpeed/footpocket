@@ -155,6 +155,8 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.white,
           headerShown: true,
           headerRight: () => (
             <Pressable
