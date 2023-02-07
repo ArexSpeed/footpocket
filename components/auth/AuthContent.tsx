@@ -10,7 +10,8 @@ import SignupForm from "./SignupForm";
 import { createUser, login } from "../../util/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../context/store";
-import { setUser } from "../../context/slices/userSlice";
+import { setUser, setUserName } from "../../context/slices/userSlice";
+import { fetchUser, fetchUserByEmail } from "../../services/users";
 
 interface Content {
   isLogin: boolean;
@@ -117,12 +118,18 @@ function AuthContent({ isLogin }: Content) {
     try {
       console.log({ email, password });
       const userData = await login(email, password);
+      const userInfo = await fetchUserByEmail(userData.email);
       console.log("login data", userData);
       dispatch(
         setUser({
           userId: userData.id,
           userEmail: userData.email,
           token: userData.token,
+        })
+      );
+      dispatch(
+        setUserName({
+          name: userInfo?.name,
         })
       );
     } catch (error) {
