@@ -26,7 +26,7 @@ type Credentials = {
 
 function AuthContent({ isLogin }: Content) {
   const navigation = useNavigation();
-  const [loginView, setLoginView] = useState(false);
+  const [loginView, setLoginView] = useState(true);
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [credentialsInvalid, setCredentialsInvalid] = useState({
@@ -50,8 +50,9 @@ function AuthContent({ isLogin }: Content) {
 
     if (
       !emailIsValid ||
-      !passwordIsValid
-      // (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+      !passwordIsValid ||
+      !emailsAreEqual ||
+      !passwordsAreEqual
     ) {
       Alert.alert("Invalid input", "Please check your entered credentials.");
       setCredentialsInvalid({
@@ -85,7 +86,6 @@ function AuthContent({ isLogin }: Content) {
           token: userData.token,
         })
       );
-      //authCtx.authenticate();
     } catch (error) {
       Alert.alert(
         "Authentication failed",
@@ -126,7 +126,10 @@ function AuthContent({ isLogin }: Content) {
         })
       );
     } catch (error) {
-      Alert.alert("Authentication failed", "Login went wrong!");
+      Alert.alert(
+        "Authentication failed",
+        "Login went wrong! Check your credentials"
+      );
     }
   }
 
@@ -154,7 +157,11 @@ function AuthContent({ isLogin }: Content) {
             changeForm={changeToSignupForm}
           />
         ) : (
-          <SignupForm onSubmit={signupHandler} changeForm={changeToLoginForm} />
+          <SignupForm
+            onSubmit={signupHandler}
+            changeForm={changeToLoginForm}
+            credentialsInvalid={credentialsInvalid}
+          />
         )}
       </ScrollView>
     </LinearGradient>

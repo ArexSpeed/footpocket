@@ -13,22 +13,24 @@ import Input from "./Input";
 
 interface Form {
   onSubmit: any;
-  // credentialsInvalid: any;
   changeForm: () => void;
+  credentialsInvalid: {
+    [key: string]: boolean;
+  };
 }
 
-function SignupForm({ onSubmit, changeForm }: Form) {
+function SignupForm({ onSubmit, changeForm, credentialsInvalid }: Form) {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
 
-  //   const {
-  //     email: emailIsInvalid,
-  //     confirmEmail: emailsDontMatch,
-  //     password: passwordIsInvalid,
-  //     confirmPassword: passwordsDontMatch,
-  //   } = credentialsInvalid;
+  const {
+    email: emailIsInvalid,
+    confirmEmail: emailsDontMatch,
+    password: passwordIsInvalid,
+    confirmPassword: passwordsDontMatch,
+  } = credentialsInvalid;
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
@@ -67,7 +69,7 @@ function SignupForm({ onSubmit, changeForm }: Form) {
           }
           value={enteredEmail}
           keyboardType="email-address"
-          // isInvalid={emailIsInvalid}
+          isInvalid={emailIsInvalid}
         />
         <Input
           label="Confirm Email Address"
@@ -76,7 +78,7 @@ function SignupForm({ onSubmit, changeForm }: Form) {
           }
           value={enteredConfirmEmail}
           keyboardType="email-address"
-          // isInvalid={emailsDontMatch}
+          isInvalid={emailsDontMatch}
         />
         <Input
           label="Password"
@@ -85,7 +87,7 @@ function SignupForm({ onSubmit, changeForm }: Form) {
           }
           secure
           value={enteredPassword}
-          // isInvalid={passwordIsInvalid}
+          isInvalid={passwordIsInvalid}
         />
         <Input
           label="Confirm Password"
@@ -94,7 +96,7 @@ function SignupForm({ onSubmit, changeForm }: Form) {
           }
           secure
           value={enteredConfirmPassword}
-          // isInvalid={passwordsDontMatch}
+          isInvalid={passwordsDontMatch}
         />
         <View style={styles.buttons}>
           <Pressable style={styles.loginBtn} onPress={submitHandler}>

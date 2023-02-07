@@ -60,7 +60,7 @@ function LoginForm({
           onUpdateValue={(value: string) =>
             updateInputValueHandler("password", value)
           }
-          //secure
+          secure
           value={enteredPassword}
           isInvalid={passwordIsInvalid}
         />
