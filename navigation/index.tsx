@@ -13,6 +13,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
+import Logout from "../components/Logout";
 
 import Colors, { colors } from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -158,21 +159,7 @@ function BottomTabNavigator() {
           headerStyle: { backgroundColor: colors.background },
           headerTintColor: colors.white,
           headerShown: true,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          headerRight: () => <Logout />,
         })}
       />
       <BottomTab.Screen

@@ -18,41 +18,28 @@ function LoginForm({
   changeForm,
 }: Form) {
   const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
   const [loginView, setLoginView] = useState(false);
 
-  const {
-    email: emailIsInvalid,
-    confirmEmail: emailsDontMatch,
-    password: passwordIsInvalid,
-    confirmPassword: passwordsDontMatch,
-  } = credentialsInvalid;
+  const { email: emailIsInvalid, password: passwordIsInvalid } =
+    credentialsInvalid;
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
       case "email":
         setEnteredEmail(enteredValue);
         break;
-      case "confirmEmail":
-        setEnteredConfirmEmail(enteredValue);
-        break;
       case "password":
         setEnteredPassword(enteredValue);
-        break;
-      case "confirmPassword":
-        setEnteredConfirmPassword(enteredValue);
         break;
     }
   }
 
   function submitHandler() {
+    console.log("login start");
     onSubmit({
       email: enteredEmail,
-      confirmEmail: enteredConfirmEmail,
       password: enteredPassword,
-      confirmPassword: enteredConfirmPassword,
     });
   }
 
@@ -68,17 +55,6 @@ function LoginForm({
           keyboardType="email-address"
           isInvalid={emailIsInvalid}
         />
-        {!isLogin && (
-          <Input
-            label="Confirm Email Address"
-            onUpdateValue={(value: string) =>
-              updateInputValueHandler("confirmEmail", value)
-            }
-            value={enteredConfirmEmail}
-            keyboardType="email-address"
-            isInvalid={emailsDontMatch}
-          />
-        )}
         <Input
           label="Password"
           onUpdateValue={(value: string) =>
@@ -89,7 +65,7 @@ function LoginForm({
           isInvalid={passwordIsInvalid}
         />
         <View style={styles.buttons}>
-          <Pressable style={styles.loginBtn}>
+          <Pressable style={styles.loginBtn} onPress={submitHandler}>
             <Text style={styles.btnText}>Log In</Text>
           </Pressable>
           <View></View>

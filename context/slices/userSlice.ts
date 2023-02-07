@@ -3,7 +3,7 @@ import type { RootState } from '../store';
 
 interface UserSlice {
   userId: string;
-  userName: string;
+  userEmail: string;
   token: string;
 }
 
@@ -11,18 +11,19 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     userId: null,
-    userName: null,
+    userEmail: null,
     token: null,
   },
   reducers: {
     setUser: (state, action) => {
-      state.userId = action.payload.id;
-      state.userName = action.payload.name;
+      console.log("action", action);
+      state.userId = action.payload.userId;
+      state.userEmail = action.payload.userEmail;
       // add token later
     },
     resetUser: ( state ) => {
       state.userId = null;
-      state.userName = null;
+      state.userEmail = null;
     },
   }
  

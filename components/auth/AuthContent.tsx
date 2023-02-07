@@ -7,7 +7,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import LoginForm from "./LoginForm";
 import { colors } from "../../constants/Colors";
 import SignupForm from "./SignupForm";
-import { createUser } from "../../util/auth";
+import { createUser, login } from "../../util/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../context/store";
+import { setUser } from "../../context/slices/userSlice";
 
 interface Content {
   isLogin: boolean;
@@ -24,6 +27,8 @@ type Credentials = {
 function AuthContent({ isLogin }: Content) {
   const navigation = useNavigation();
   const [loginView, setLoginView] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
@@ -31,7 +36,7 @@ function AuthContent({ isLogin }: Content) {
     confirmPassword: false,
   });
 
-  function submitHandler(credentials: Credentials) {
+  function signupHandler(credentials: Credentials) {
     let { email, confirmEmail, password, confirmPassword } = credentials;
 
     email = email.trim();
@@ -57,10 +62,10 @@ function AuthContent({ isLogin }: Content) {
       });
       return;
     }
-    signupHandler({ email, password });
+    signupAuthenticate({ email, password });
   }
 
-  async function signupHandler({
+  async function signupAuthenticate({
     email,
     password,
   }: {
@@ -73,10 +78,13 @@ function AuthContent({ isLogin }: Content) {
       console.log({ email, password });
       const userData = await createUser(email, password);
       console.log("userData", userData);
-      // dispatch(setUser({
-      //   id: ,
-      //   userName:
-      // }));
+      dispatch(
+        setUser({
+          userId: userData.id,
+          userEmail: userData.email,
+          token: userData.token,
+        })
+      );
       //authCtx.authenticate();
     } catch (error) {
       Alert.alert(
@@ -86,6 +94,40 @@ function AuthContent({ isLogin }: Content) {
     }
 
     // setIsAuthenticating(false);
+  }
+
+  // Login Form
+  function loginHandler(credentials: Credentials) {
+    let { email, password } = credentials;
+
+    //console.log("valid submitHandler", emailIsValid, passwordIsValid);
+
+    loginAuthenticate({ email, password });
+  }
+
+  async function loginAuthenticate({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    console.log("authenticate");
+    //setIsAuthenticating(true);
+    try {
+      console.log({ email, password });
+      const userData = await login(email, password);
+      console.log("login data", userData);
+      dispatch(
+        setUser({
+          userId: userData.id,
+          userEmail: userData.email,
+          token: userData.token,
+        })
+      );
+    } catch (error) {
+      Alert.alert("Authentication failed", "Login went wrong!");
+    }
   }
 
   function changeToLoginForm() {
@@ -107,12 +149,12 @@ function AuthContent({ isLogin }: Content) {
         {loginView ? (
           <LoginForm
             isLogin={isLogin}
-            onSubmit={() => {}}
+            onSubmit={loginHandler}
             credentialsInvalid={credentialsInvalid}
             changeForm={changeToSignupForm}
           />
         ) : (
-          <SignupForm onSubmit={submitHandler} changeForm={changeToLoginForm} />
+          <SignupForm onSubmit={signupHandler} changeForm={changeToLoginForm} />
         )}
       </ScrollView>
     </LinearGradient>
