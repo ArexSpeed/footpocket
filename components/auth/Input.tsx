@@ -11,10 +11,10 @@ import { colors } from "../../constants/Colors";
 interface Input {
   label: string;
   keyboardType?: KeyboardTypeOptions;
-  secure?: string;
+  secure?: boolean;
   onUpdateValue: (value: string) => void;
   value: string;
-  isInvalid: boolean;
+  isInvalid?: boolean;
 }
 
 function Input({
@@ -34,7 +34,7 @@ function Input({
         style={[styles.input, isInvalid && styles.inputInvalid]}
         autoCapitalize="none"
         keyboardType={keyboardType}
-        // secureTextEntry={secure}
+        secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}
       />

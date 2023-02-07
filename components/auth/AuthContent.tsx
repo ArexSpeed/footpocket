@@ -1,19 +1,29 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
 // import FlatButton from "../ui/FlatButton";
-import AuthForm from "./AuthForm";
+import LoginForm from "./LoginForm";
 import { colors } from "../../constants/Colors";
+import SignupForm from "./SignupForm";
+import { createUser } from "../../util/auth";
 
 interface Content {
   isLogin: boolean;
-  onAuthenticate: any;
+  //onAuthenticate: any;
 }
 
-function AuthContent({ isLogin, onAuthenticate }: Content) {
+type Credentials = {
+  email: string;
+  password: string;
+  confirmEmail: string;
+  confirmPassword: string;
+};
+
+function AuthContent({ isLogin }: Content) {
   const navigation = useNavigation();
+  const [loginView, setLoginView] = useState(false);
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
@@ -21,42 +31,70 @@ function AuthContent({ isLogin, onAuthenticate }: Content) {
     confirmPassword: false,
   });
 
-  //   function switchAuthModeHandler() {
-  //     // Todo
-  //     if (isLogin) {
-  //       navigation.replace("Signup");
-  //     } else {
-  //       navigation.replace("Login");
-  //     }
-  //   }
+  function submitHandler(credentials: Credentials) {
+    let { email, confirmEmail, password, confirmPassword } = credentials;
 
-  //   function submitHandler(credentials) {
-  //     let { email, confirmEmail, password, confirmPassword } = credentials;
+    email = email.trim();
+    password = password.trim();
 
-  //     email = email.trim();
-  //     password = password.trim();
+    const emailIsValid = email.includes("@");
+    const passwordIsValid = password.length > 6;
+    const emailsAreEqual = email === confirmEmail;
+    const passwordsAreEqual = password === confirmPassword;
+    console.log("valid submitHandler", emailIsValid, passwordIsValid);
 
-  //     const emailIsValid = email.includes("@");
-  //     const passwordIsValid = password.length > 6;
-  //     const emailsAreEqual = email === confirmEmail;
-  //     const passwordsAreEqual = password === confirmPassword;
+    if (
+      !emailIsValid ||
+      !passwordIsValid
+      // (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+    ) {
+      Alert.alert("Invalid input", "Please check your entered credentials.");
+      setCredentialsInvalid({
+        email: !emailIsValid,
+        confirmEmail: !emailIsValid || !emailsAreEqual,
+        password: !passwordIsValid,
+        confirmPassword: !passwordIsValid || !passwordsAreEqual,
+      });
+      return;
+    }
+    signupHandler({ email, password });
+  }
 
-  //     if (
-  //       !emailIsValid ||
-  //       !passwordIsValid ||
-  //       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
-  //     ) {
-  //       Alert.alert("Invalid input", "Please check your entered credentials.");
-  //       setCredentialsInvalid({
-  //         email: !emailIsValid,
-  //         confirmEmail: !emailIsValid || !emailsAreEqual,
-  //         password: !passwordIsValid,
-  //         confirmPassword: !passwordIsValid || !passwordsAreEqual,
-  //       });
-  //       return;
-  //     }
-  //     onAuthenticate({ email, password });
-  //   }
+  async function signupHandler({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    console.log("authenticate");
+    //setIsAuthenticating(true);
+    try {
+      console.log({ email, password });
+      const userData = await createUser(email, password);
+      console.log("userData", userData);
+      // dispatch(setUser({
+      //   id: ,
+      //   userName:
+      // }));
+      //authCtx.authenticate();
+    } catch (error) {
+      Alert.alert(
+        "Authentication failed",
+        "Could not create user, please try it later"
+      );
+    }
+
+    // setIsAuthenticating(false);
+  }
+
+  function changeToLoginForm() {
+    setLoginView(true);
+  }
+
+  function changeToSignupForm() {
+    setLoginView(false);
+  }
 
   return (
     <LinearGradient
@@ -65,16 +103,18 @@ function AuthContent({ isLogin, onAuthenticate }: Content) {
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
     >
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={() => {}}
-        credentialsInvalid={credentialsInvalid}
-      />
-      <View style={styles.buttons}>
-        {/* <FlatButton onPress={() => {}}>
-          {isLogin ? "Create a new user" : "Log in instead"}
-        </FlatButton> */}
-      </View>
+      <ScrollView>
+        {loginView ? (
+          <LoginForm
+            isLogin={isLogin}
+            onSubmit={() => {}}
+            credentialsInvalid={credentialsInvalid}
+            changeForm={changeToSignupForm}
+          />
+        ) : (
+          <SignupForm onSubmit={submitHandler} changeForm={changeToLoginForm} />
+        )}
+      </ScrollView>
     </LinearGradient>
   );
 }

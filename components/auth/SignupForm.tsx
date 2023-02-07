@@ -1,28 +1,34 @@
 import { useState } from "react";
-import { StyleSheet, View, Button, Pressable, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  Pressable,
+  Text,
+  GestureResponderEvent,
+} from "react-native";
 import { colors } from "../../constants/Colors";
 
 import Input from "./Input";
 
 interface Form {
-  isLogin: boolean;
   onSubmit: any;
-  credentialsInvalid: any;
+  // credentialsInvalid: any;
+  changeForm: () => void;
 }
 
-function AuthForm({ isLogin, onSubmit, credentialsInvalid }: Form) {
+function SignupForm({ onSubmit, changeForm }: Form) {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
-  const [loginView, setLoginView] = useState(false);
 
-  const {
-    email: emailIsInvalid,
-    confirmEmail: emailsDontMatch,
-    password: passwordIsInvalid,
-    confirmPassword: passwordsDontMatch,
-  } = credentialsInvalid;
+  //   const {
+  //     email: emailIsInvalid,
+  //     confirmEmail: emailsDontMatch,
+  //     password: passwordIsInvalid,
+  //     confirmPassword: passwordsDontMatch,
+  //   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
@@ -42,6 +48,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }: Form) {
   }
 
   function submitHandler() {
+    console.log("submit signup");
     onSubmit({
       email: enteredEmail,
       confirmEmail: enteredConfirmEmail,
@@ -60,48 +67,43 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }: Form) {
           }
           value={enteredEmail}
           keyboardType="email-address"
-          isInvalid={emailIsInvalid}
+          // isInvalid={emailIsInvalid}
         />
-        {!isLogin && (
-          <Input
-            label="Confirm Email Address"
-            onUpdateValue={(value: string) =>
-              updateInputValueHandler("confirmEmail", value)
-            }
-            value={enteredConfirmEmail}
-            keyboardType="email-address"
-            isInvalid={emailsDontMatch}
-          />
-        )}
+        <Input
+          label="Confirm Email Address"
+          onUpdateValue={(value: string) =>
+            updateInputValueHandler("confirmEmail", value)
+          }
+          value={enteredConfirmEmail}
+          keyboardType="email-address"
+          // isInvalid={emailsDontMatch}
+        />
         <Input
           label="Password"
           onUpdateValue={(value: string) =>
             updateInputValueHandler("password", value)
           }
-          //secure
+          secure
           value={enteredPassword}
-          isInvalid={passwordIsInvalid}
+          // isInvalid={passwordIsInvalid}
         />
-        {/* {!isLogin && (
-          <Input
-            label="Confirm Password"
-            onUpdateValue={updateInputValueHandler.bind(
-              this,
-              "confirmPassword"
-            )}
-            secure
-            value={enteredConfirmPassword}
-            isInvalid={passwordsDontMatch}
-          />
-        )} */}
+        <Input
+          label="Confirm Password"
+          onUpdateValue={(value: string) =>
+            updateInputValueHandler("confirmPassword", value)
+          }
+          secure
+          value={enteredConfirmPassword}
+          // isInvalid={passwordsDontMatch}
+        />
         <View style={styles.buttons}>
-          <Pressable style={styles.loginBtn}>
-            <Text style={styles.btnText}>Log In</Text>
+          <Pressable style={styles.loginBtn} onPress={submitHandler}>
+            <Text style={styles.btnText}>Create account</Text>
           </Pressable>
           <View></View>
-          <Text style={styles.btnText}>You do not have an account?</Text>
-          <Pressable style={styles.signupBtn}>
-            <Text style={styles.btnText}>Sign Up</Text>
+          <Text style={styles.btnText}>Do you already have an account?</Text>
+          <Pressable style={styles.signupBtn} onPress={changeForm}>
+            <Text style={styles.btnText}>Login form</Text>
           </Pressable>
         </View>
       </View>
@@ -109,7 +111,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }: Form) {
   );
 }
 
-export default AuthForm;
+export default SignupForm;
 
 const styles = StyleSheet.create({
   form: {
