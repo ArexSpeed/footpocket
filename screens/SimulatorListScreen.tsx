@@ -19,7 +19,12 @@ import Slider from "@react-native-community/slider";
 import teamsData from "../data/teams.json";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../context/store";
-import { createTable, updateTeam } from "../context/slices/simulatorSlice";
+import {
+  createSchedule,
+  createTable,
+  updateTeam,
+} from "../context/slices/simulatorSlice";
+import { fixtures } from "../util/fixtures";
 
 interface Team {
   id: string;
@@ -55,6 +60,8 @@ export default function SimulatorListScreen({
   // }, [route]);
   function pressHandler() {
     dispatch(createTable(teams));
+    const schedule = fixtures(teams);
+    dispatch(createSchedule(schedule));
     navigation.navigate("SimulatorGame");
   }
 
