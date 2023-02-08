@@ -1,16 +1,19 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import Container from "../components/Container";
 import Tabs from "../components/Tabs";
 import Title from "../components/Title";
 import { colors } from "../constants/Colors";
+import { RootState } from "../context/store";
 import { RootTabScreenProps } from "../types";
 
 export default function SimulatorGameScreen({
   navigation,
 }: RootTabScreenProps<"SimulatorGame">) {
   const [activeTab, setActiveTab] = useState("Schedule");
+  const { teams, table } = useSelector((state: RootState) => state.simulator);
 
   function activeTabHandler(tab: string) {
     setActiveTab(tab);
@@ -92,6 +95,29 @@ export default function SimulatorGameScreen({
               <Text style={styles.th}>PT</Text>
             </View>
           </LinearGradient>
+          {table.map((team, i) => (
+            <View
+              key={i}
+              style={[
+                styles.tableRow,
+                i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+              ]}
+            >
+              <View style={styles.tableContainer}>
+                <Text style={styles.tr}>{i + 1}</Text>
+                <Text style={styles.tr}>{team.name}</Text>
+              </View>
+              <View style={styles.tableContainer}>
+                <Text style={styles.trSmall}>{team.games}</Text>
+                <Text style={styles.trSmall}>{team.win}</Text>
+                <Text style={styles.trSmall}>{team.draw}</Text>
+                <Text style={styles.trSmall}>{team.loses}</Text>
+                <Text style={styles.trSmall}>{team.goalPlus}</Text>
+                <Text style={styles.trSmall}>{team.goalMinus}</Text>
+                <Text style={styles.tr}>{team.points}</Text>
+              </View>
+            </View>
+          ))}
           <View style={[styles.tableRow, styles.tableRowOdd]}>
             <View style={styles.tableContainer}>
               <Text style={styles.tr}>1</Text>

@@ -7,11 +7,14 @@ import Tabs from "../components/Tabs";
 import Container from "../components/Container";
 import LeagueCard from "../components/LeagueCard";
 import data from "../data/teams.json";
+import { useDispatch } from "react-redux";
+import { setLeague } from "../context/slices/simulatorSlice";
 
 export default function SimulatorScreen({
   navigation,
 }: RootTabScreenProps<"Simulator">) {
   const [activeTab, setActiveTab] = useState("New");
+  const dispatch = useDispatch();
 
   const randId = Math.floor(Math.random() * 10000).toString();
 
@@ -22,6 +25,11 @@ export default function SimulatorScreen({
   };
 
   function navigateHandler(league: string) {
+    dispatch(
+      setLeague({
+        league: league,
+      })
+    );
     navigation.navigate("SimulatorList", {
       league: league,
     });

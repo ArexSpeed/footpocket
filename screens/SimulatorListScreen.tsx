@@ -17,6 +17,9 @@ import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
 import Slider from "@react-native-community/slider";
 import teamsData from "../data/teams.json";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../context/store";
+import { createTable, updateTeam } from "../context/slices/simulatorSlice";
 
 interface Team {
   id: string;
@@ -30,7 +33,9 @@ export default function SimulatorListScreen({
   navigation,
   route,
 }: RootTabScreenProps<"SimulatorList">) {
-  const [teams, setTeams] = useState<Team[] | undefined>([]);
+  //const [teams, setTeams] = useState<Team[] | undefined>([]);
+  const dispatch = useDispatch();
+  const { teams } = useSelector((state: RootState) => state.simulator);
   const [editTeamValue, setEditTeamValue] = useState<Team>({
     id: "",
     name: "",
@@ -40,21 +45,27 @@ export default function SimulatorListScreen({
   });
   const [editModal, setEditModal] = useState(false);
 
-  useLayoutEffect(() => {
-    if (route.params?.league) {
-      const selectedTeams = teamsData.find(
-        (item) => item.leagueName === route.params?.league
-      );
-      setTeams(selectedTeams?.teams);
-    }
-  }, [route]);
+  // useLayoutEffect(() => {
+  //   if (route.params?.league) {
+  //     const selectedTeams = teamsData.find(
+  //       (item) => item.leagueName === route.params?.league
+  //     );
+  //     setTeams(selectedTeams?.teams);
+  //   }
+  // }, [route]);
   function pressHandler() {
+    dispatch(createTable(teams));
     navigation.navigate("SimulatorGame");
   }
 
   function editHandler(team: Team) {
     setEditModal(true);
     setEditTeamValue(team);
+  }
+
+  function updateTeamHandler() {
+    dispatch(updateTeam(editTeamValue));
+    setEditModal(false);
   }
   return (
     <Container>
@@ -129,10 +140,7 @@ export default function SimulatorListScreen({
             />
           </View>
           <View style={styles.modalButtons}>
-            <Pressable
-              style={styles.updateBtn}
-              onPress={() => setEditModal(false)}
-            >
+            <Pressable style={styles.updateBtn} onPress={updateTeamHandler}>
               <Text style={styles.startText}>UPDATE</Text>
             </Pressable>
             <Pressable
