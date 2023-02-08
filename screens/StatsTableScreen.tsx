@@ -1,21 +1,89 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import Container from "../components/Container";
 import Tabs from "../components/Tabs";
 import Title from "../components/Title";
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
+import axios from "axios";
+import { setStandings } from "../context/slices/statsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../context/store";
+import { RAPID_API } from "@env";
 
 export default function StatsScreen({
   navigation,
   route,
 }: RootTabScreenProps<"StatsTable">) {
   const [activeTab, setActiveTab] = useState("Schedule");
+  const dispatch = useDispatch();
+  const stats = useSelector((state: RootState) => state.stats);
+  const [tables, setTables] = useState<any>([]);
 
   function activeTabHandler(tab: string) {
     setActiveTab(tab);
   }
+
+  const options = {
+    method: "GET",
+    url: "https://api-football-beta.p.rapidapi.com/standings",
+    params: { season: "2022", league: "39" },
+    headers: {
+      "X-RapidAPI-Key": RAPID_API,
+      "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com",
+    },
+  };
+
+  useEffect(() => {
+    console.log("start effect");
+    if (!stats.standings) {
+      console.log("is empty");
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+          dispatch(
+            setStandings({
+              standings: response.data,
+            })
+          );
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+  }, []);
+
+  console.log("stats", stats);
+  // console.log("stats standings", stats.standings);
+  // console.log("stats standings res", stats.standings.response);
+  // console.log("stats standings res stand", stats.standings.response[0]);
+  // console.log(
+  //   "stats standings res stand league",
+  //   stats.standings.response[0].league
+  // );
+  // console.log(
+  //   "stats standings res stand league stan[0]",
+  //   stats.standings.response[0].league.standings[0]
+  // );
+  // stats.standings.response[0].league.standings[0].map((item: any, i: any) =>
+  //   //console.log(`Team ${i}:`, item)
+  //   setStandings((prev: any) => [...prev, item])
+  // );
+  // // console.log(
+  //   "stats standings res stand league stan[0]",
+  //   stats.standings.response[0].league.standings[0]
+  // );
+
+  useLayoutEffect(() => {
+    setTables([]);
+    stats?.standings?.response[0].league.standings[0].map((item: any, i: any) =>
+      //console.log(`Team ${i}:`, item)
+      setTables((prev: any) => [...prev, item])
+    );
+  }, [stats]);
+
   return (
     <Container>
       <Title>{route.params ? route.params.league : "League"}</Title>
@@ -34,7 +102,7 @@ export default function StatsScreen({
             start={{ x: 0, y: 0.5 }}
             end={{ x: 1, y: 0.5 }}
           >
-            <Text style={styles.text}>Round 1</Text>
+            <Text style={styles.text}>Round 5</Text>
           </LinearGradient>
           {/* VS */}
           <LinearGradient
@@ -82,7 +150,30 @@ export default function StatsScreen({
               <Text style={styles.th}>PT</Text>
             </View>
           </LinearGradient>
-          <View style={[styles.tableRow, styles.tableRowOdd]}>
+          {tables?.map((item: any, i: any) => (
+            <View
+              key={i}
+              style={[
+                styles.tableRow,
+                i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+              ]}
+            >
+              <View style={styles.tableContainer}>
+                <Text style={styles.tr}>{i + 1}</Text>
+                <Text style={styles.tr}>{item.team.name}</Text>
+              </View>
+              <View style={styles.tableContainer}>
+                <Text style={styles.trSmall}>{item.all.played}</Text>
+                <Text style={styles.trSmall}>{item.all.win}</Text>
+                <Text style={styles.trSmall}>{item.all.draw}</Text>
+                <Text style={styles.trSmall}>{item.all.lose}</Text>
+                <Text style={styles.trSmall}>{item.all.goals.for}</Text>
+                <Text style={styles.trSmall}>{item.all.goals.against}</Text>
+                <Text style={styles.tr}>{item.points}</Text>
+              </View>
+            </View>
+          ))}
+          {/* <View style={[styles.tableRow, styles.tableRowOdd]}>
             <View style={styles.tableContainer}>
               <Text style={styles.tr}>1</Text>
               <Text style={styles.tr}>Manchester United</Text>
@@ -96,8 +187,8 @@ export default function StatsScreen({
               <Text style={styles.trSmall}>10</Text>
               <Text style={styles.tr}>30</Text>
             </View>
-          </View>
-          <View style={[styles.tableRow, styles.tableRowEven]}>
+          </View> */}
+          {/* <View style={[styles.tableRow, styles.tableRowEven]}>
             <View style={styles.tableContainer}>
               <Text style={styles.tr}>1</Text>
               <Text style={styles.tr}>Manchester United</Text>
@@ -111,7 +202,7 @@ export default function StatsScreen({
               <Text style={styles.trSmall}>10</Text>
               <Text style={styles.tr}>30</Text>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       )}
     </Container>
