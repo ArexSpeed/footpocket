@@ -1,9 +1,8 @@
-import axios from 'axios';
-
-const API_KEY = "AIzaSyAc-CYouvvJmZjACiPz8YE99tUZ0fOKAqI";
+import axios from "axios";
+import { BASE_API } from "@env";
 
 async function authenticate(mode: string, email: string, password: string) {
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${BASE_API}`;
   // console.log("authenticate end", mode, email, password, url);
 
   const response = await axios.post(url, {
@@ -18,7 +17,7 @@ async function authenticate(mode: string, email: string, password: string) {
     id: response.data.localId,
     email: response.data.email,
     token: response.data.idToken,
-  }
+  };
   return user;
 }
 

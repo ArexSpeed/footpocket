@@ -14,8 +14,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   return (
     <Container>
       {user.userId ? <UserCard /> : <AuthContent isLogin={true} />}
-      <Message />
-      <Text>{user.userId}</Text>
     </Container>
   );
 }

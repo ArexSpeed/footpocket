@@ -5,22 +5,67 @@ import {
   Pressable,
   View,
   ScrollView,
+  Modal,
+  TextInput,
 } from "react-native";
-
+import { useState, useEffect } from "react";
 import { RootTabScreenProps } from "../types";
 import Container from "../components/Container";
 import Title from "../components/Title";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../constants/Colors";
 import typerData from "../data/typer.json";
+import { useSelector } from "react-redux";
+import { RootState } from "../context/store";
+import {
+  createTyperLeague,
+  fetchAllTypers,
+  fetchUserTypersLeague,
+} from "../services/typer";
+
+interface Typer {
+  id: string;
+  league: string;
+  users: [];
+}
 
 export default function TyperScreen({
   navigation,
 }: RootTabScreenProps<"TyperMain">) {
+  const user = useSelector((state: RootState) => state.user);
+  const [modalCreate, setModalCreate] = useState(false);
+  const [newLeagueName, setNewLeagueName] = useState("");
+  const [typersLeagues, setTypersLeagues] = useState<Typer[]>([]);
+  const [userLeagues, setUserLeagues] = useState<Typer[]>([]);
   function navigateHandler(league: string) {
     navigation.navigate("TyperLeague", {
       league: league,
     });
+  }
+
+  useEffect(() => {
+    setTypersLeagues([]);
+    async function getTypersLeague() {
+      const response = await fetchAllTypers();
+      setTypersLeagues(response);
+    }
+    async function getUserTypersLeague() {
+      const response = await fetchUserTypersLeague(user.userId);
+      setUserLeagues(response);
+    }
+
+    getTypersLeague();
+    getUserTypersLeague();
+  }, []);
+
+  async function createLeague() {
+    const payload = {
+      leagueName: newLeagueName,
+      user: user,
+    };
+    const response = await createTyperLeague(payload);
+    setModalCreate(false);
+    return response;
   }
 
   return (
@@ -28,60 +73,79 @@ export default function TyperScreen({
       <Title>Choose your typer league</Title>
       <ScrollView style={styles.innerContainer}>
         <View style={styles.titleRow}>
-          <Text style={styles.text}>My Leagues</Text>
-          <Pressable style={styles.playBtn}>
-            <Text style={styles.text}>Create New</Text>
-          </Pressable>
+          <Text style={styles.text}>User Leagues</Text>
+          {user.userId && (
+            <Pressable
+              style={styles.playBtn}
+              onPress={() => setModalCreate(true)}
+            >
+              <Text style={styles.text}>Create New</Text>
+            </Pressable>
+          )}
         </View>
-        {typerData.map((item) => (
-          <Pressable
-            key={item.leagueId}
-            onPress={() => navigateHandler(item.leagueName)}
-          >
+        {userLeagues.length <= 0 && (
+          <Text style={styles.text}>
+            You are not involved in any typer league
+          </Text>
+        )}
+        {userLeagues?.map((item, i) => (
+          <Pressable key={item.id} onPress={() => navigateHandler(item.league)}>
             <LinearGradient
               colors={colors.primaryGradient}
               style={styles.titleRow}
               start={{ x: 0, y: 0.5 }}
               end={{ x: 1, y: 0.5 }}
             >
-              <Text style={styles.text}>{item.leagueName}</Text>
-              <Text style={styles.textGray}>{item.table.length} members</Text>
+              <Text style={styles.text}>{item.league}</Text>
+              <Text style={styles.textGray}>{item.users.length} members</Text>
             </LinearGradient>
           </Pressable>
         ))}
-
-        <View style={{ marginTop: 16 }}></View>
         <View style={styles.titleRow}>
-          <Text style={styles.text}>Open Leagues</Text>
+          <Text style={styles.text}>All Leagues</Text>
         </View>
-        <Pressable>
-          <LinearGradient
-            colors={colors.primaryGradient}
-            style={styles.titleRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Premier League</Text>
-            <View style={styles.gameRow}>
-              <Pressable style={styles.joinBtn}>
-                <Text style={styles.text}>Join</Text>
-              </Pressable>
-              <Text style={styles.textGray}>18 members</Text>
-            </View>
-          </LinearGradient>
-        </Pressable>
-        <Pressable>
-          <LinearGradient
-            colors={colors.primaryGradient}
-            style={styles.titleRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Bundesliga</Text>
-            <Text style={styles.textGray}>8 members</Text>
-          </LinearGradient>
-        </Pressable>
+        {typersLeagues?.map((item, i) => {
+          return (
+            <Pressable
+              key={item.id}
+              onPress={() => navigateHandler(item.league)}
+            >
+              <LinearGradient
+                colors={colors.primaryGradient}
+                style={styles.titleRow}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+              >
+                <Text style={styles.text}>{item.league}</Text>
+                <Text style={styles.textGray}>{item.users.length} members</Text>
+              </LinearGradient>
+            </Pressable>
+          );
+        })}
       </ScrollView>
+      <Modal visible={modalCreate}>
+        <View style={styles.modalView}>
+          <View style={styles.label}>
+            <Text style={styles.labelTitle}>League name:</Text>
+            <TextInput
+              style={styles.labelInput}
+              value={newLeagueName}
+              onChangeText={(value) => setNewLeagueName(value)}
+            />
+          </View>
+          <View style={styles.modalButtons}>
+            <Pressable style={styles.updateBtn} onPress={createLeague}>
+              <Text style={styles.btnText}>CREATE</Text>
+            </Pressable>
+            <Pressable
+              style={styles.cancelBtn}
+              onPress={() => setModalCreate(false)}
+            >
+              <Text style={styles.btnText}>CANCEL</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </Container>
   );
 }
@@ -130,5 +194,53 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: colors.blue,
     marginRight: 8,
+  },
+  // Modal
+  modalView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.background,
+    color: colors.white,
+  },
+
+  label: {
+    flexDirection: "column",
+    width: "100%",
+    padding: 8,
+  },
+  labelTitle: {
+    fontSize: 16,
+    fontFamily: "baloo",
+    color: colors.gray,
+  },
+  labelInput: {
+    fontFamily: "baloo-bold",
+    fontSize: 20,
+    padding: 8,
+    color: colors.white,
+    backgroundColor: colors.darkgray,
+    borderRadius: 8,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  updateBtn: {
+    backgroundColor: colors.lightblue,
+    padding: 8,
+    borderRadius: 8,
+    margin: 4,
+  },
+  cancelBtn: {
+    backgroundColor: colors.red,
+    padding: 8,
+    borderRadius: 8,
+    margin: 4,
+  },
+  btnText: {
+    fontSize: 24,
+    fontFamily: "baloo-bold",
+    color: colors.black,
   },
 });
