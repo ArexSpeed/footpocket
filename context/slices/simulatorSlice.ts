@@ -87,22 +87,17 @@ const simulatorSlice = createSlice({
       state.schedule = action.payload;
     },
     playGame: (state, action) => {
-      // payload: {
-      //     round:
-      //     gameId:
-      //     hostScore:
-      //     guestScore:
-      // }
+      //console.log("paylaod", action.payload);
       const findRound = state.schedule.find(
-        (round) => (round.round = action.payload.round)
+        (round) => round.round === action.payload.round
       );
       const roundId = state.schedule.findIndex(
-        (round) => (round.round = action.payload.round)
+        (round) => round.round === action.payload.round
       );
       const gameId = findRound?.games.findIndex(
         (game) => game.id === action.payload.gameId
       );
-      if (gameId) {
+      if (gameId !== undefined) {
         state.schedule[roundId].games[gameId].hostScore =
           action.payload.hostScore;
         state.schedule[roundId].games[gameId].guestScore =
@@ -146,6 +141,12 @@ const simulatorSlice = createSlice({
         };
         state.table[teamHostId] = hostUpdate;
         state.table[teamGuestId] = guestUpdate;
+        state.table = state.table.sort(
+          (a, b) =>
+            b.points - a.points ||
+            b.goalPlus - a.goalPlus ||
+            a.goalMinus - b.goalMinus
+        );
       }
     },
   },

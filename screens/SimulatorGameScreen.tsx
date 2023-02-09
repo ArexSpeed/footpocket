@@ -44,7 +44,7 @@ export default function SimulatorGameScreen({
   }
 
   //console.log("schedule", schedule);
-  console.log("table", table);
+  // console.log("table", table);
 
   function play(host: Team, guest: Team, gameId: string, round: number) {
     console.log("play", host, guest);
@@ -107,7 +107,7 @@ export default function SimulatorGameScreen({
       guestTable.draw = 1;
     }
 
-    console.log("scores: ", score1, score2);
+    // console.log("scores: ", score1, score2);
     dispatch(
       playGame({
         round,
@@ -136,104 +136,54 @@ export default function SimulatorGameScreen({
       />
       {activeTab === "Schedule" ? (
         <ScrollView style={styles.schedule}>
-          {/* Round1 */}
-          {/* {fixtures(teams).map((round) => {
-            round[number]
-            rounds.map((item) => (
-              item.games.map((game) => 
-              game.host vs Gamepad.guest score link: game.host id
-              )
-            ))
-          })} */}
           {schedule.map((round: Round) => (
-            <>
+            <View key={round.round}>
               <LinearGradient
                 colors={colors.primaryGradient}
                 style={styles.roundRow}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
-                key={round.round}
               >
                 <Text style={styles.text}>Round {round.round}</Text>
-                <Pressable style={styles.playBtn}>
+                {/* <Pressable style={styles.playBtn}>
                   <Text style={styles.text}>Play All</Text>
-                </Pressable>
+                </Pressable> */}
               </LinearGradient>
               {round.games.map((game, i) => (
-                <LinearGradient
-                  colors={
-                    i % 2 === 0
-                      ? [colors.blue, colors.black]
-                      : [colors.black, colors.blue]
-                  }
-                  style={styles.gameRow}
-                  start={{ x: 0, y: 0.5 }}
-                  end={{ x: 1, y: 0.5 }}
+                <View
+                  style={[
+                    styles.gameRow,
+                    i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+                  ]}
                   key={i}
                 >
-                  <Text style={styles.text}>{game.host.name}</Text>
+                  <View style={styles.gameRowText}>
+                    <Text style={styles.text}>{game.host.name}</Text>
+                  </View>
                   {game.isPlayed ? (
-                    <>
+                    <View style={styles.scoreRow}>
                       <Text style={styles.text}>{game.hostScore}</Text>
+                      <Text style={styles.text}> : </Text>
                       <Text style={styles.text}>{game.guestScore}</Text>
-                    </>
+                    </View>
                   ) : (
-                    <Pressable
-                      onPress={() =>
-                        play(game.host, game.guest, game.id, game.round)
-                      }
-                    >
-                      <Text style={styles.text}>Play</Text>
-                    </Pressable>
+                    <View style={styles.scoreRow}>
+                      <Pressable
+                        onPress={() =>
+                          play(game.host, game.guest, game.id, game.round)
+                        }
+                      >
+                        <Text style={styles.textPlay}>Play</Text>
+                      </Pressable>
+                    </View>
                   )}
-
-                  <Text style={styles.text}>{game.guest.name}</Text>
-                </LinearGradient>
+                  <View style={styles.gameRowTextEnd}>
+                    <Text style={styles.text}>{game.guest.name}</Text>
+                  </View>
+                </View>
               ))}
-            </>
+            </View>
           ))}
-          <LinearGradient
-            colors={colors.primaryGradient}
-            style={styles.roundRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Round 1</Text>
-            <Pressable style={styles.playBtn}>
-              <Text style={styles.text}>Play All</Text>
-            </Pressable>
-          </LinearGradient>
-          {/* VS */}
-          <LinearGradient
-            colors={[colors.blue, colors.black]}
-            style={styles.gameRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Manchester United</Text>
-            <Text style={styles.text}>2</Text>
-            <Text style={styles.text}>0</Text>
-            <Text style={styles.text}>Manchester United</Text>
-          </LinearGradient>
-          <LinearGradient
-            colors={[colors.black, colors.blue]}
-            style={styles.gameRow}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-          >
-            <Text style={styles.text}>Manchester United</Text>
-            <Pressable>
-              <Text style={styles.text}>Play</Text>
-            </Pressable>
-            <Text style={styles.text}>Manchester United</Text>
-          </LinearGradient>
-          {/* <View style={styles.gameRow}>
-        <Text style={styles.text}>Manchester United</Text>
-        <Pressable>
-          <Text style={styles.text}>Play</Text>
-        </Pressable>
-        <Text style={styles.text}>Manchester United</Text>
-      </View> */}
         </ScrollView>
       ) : (
         <ScrollView style={styles.schedule}>
@@ -257,61 +207,29 @@ export default function SimulatorGameScreen({
               <Text style={styles.th}>PT</Text>
             </View>
           </LinearGradient>
-          {table
-            //.sort((a, b) => b.points - a.points)
-            .map((team, i) => (
-              <View
-                key={i}
-                style={[
-                  styles.tableRow,
-                  i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
-                ]}
-              >
-                <View style={styles.tableContainer}>
-                  <Text style={styles.tr}>{i + 1}</Text>
-                  <Text style={styles.tr}>{team.name}</Text>
-                </View>
-                <View style={styles.tableContainer}>
-                  <Text style={styles.trSmall}>{team.games}</Text>
-                  <Text style={styles.trSmall}>{team.win}</Text>
-                  <Text style={styles.trSmall}>{team.draw}</Text>
-                  <Text style={styles.trSmall}>{team.loses}</Text>
-                  <Text style={styles.trSmall}>{team.goalPlus}</Text>
-                  <Text style={styles.trSmall}>{team.goalMinus}</Text>
-                  <Text style={styles.tr}>{team.points}</Text>
-                </View>
+          {table.map((team, i) => (
+            <View
+              key={i}
+              style={[
+                styles.tableRow,
+                i % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+              ]}
+            >
+              <View style={styles.tableContainer}>
+                <Text style={styles.tr}>{i + 1}</Text>
+                <Text style={styles.tr}>{team.name}</Text>
               </View>
-            ))}
-          <View style={[styles.tableRow, styles.tableRowOdd]}>
-            <View style={styles.tableContainer}>
-              <Text style={styles.tr}>1</Text>
-              <Text style={styles.tr}>Manchester United</Text>
+              <View style={styles.tableContainer}>
+                <Text style={styles.trSmall}>{team.games}</Text>
+                <Text style={styles.trSmall}>{team.win}</Text>
+                <Text style={styles.trSmall}>{team.draw}</Text>
+                <Text style={styles.trSmall}>{team.loses}</Text>
+                <Text style={styles.trSmall}>{team.goalPlus}</Text>
+                <Text style={styles.trSmall}>{team.goalMinus}</Text>
+                <Text style={styles.tr}>{team.points}</Text>
+              </View>
             </View>
-            <View style={styles.tableContainer}>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.tr}>30</Text>
-            </View>
-          </View>
-          <View style={[styles.tableRow, styles.tableRowEven]}>
-            <View style={styles.tableContainer}>
-              <Text style={styles.tr}>1</Text>
-              <Text style={styles.tr}>Manchester United</Text>
-            </View>
-            <View style={styles.tableContainer}>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.trSmall}>10</Text>
-              <Text style={styles.tr}>30</Text>
-            </View>
-          </View>
+          ))}
         </ScrollView>
       )}
     </Container>
@@ -332,6 +250,7 @@ const styles = StyleSheet.create({
     padding: 4,
     backgroundColor: colors.secondary,
     borderRadius: 4,
+    marginTop: 8,
   },
   playBtn: {
     padding: 4,
@@ -344,8 +263,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 4,
   },
+  scoreRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  gameRowText: {
+    width: "40%",
+  },
+  gameRowTextEnd: {
+    width: "40%",
+    alignItems: "flex-end",
+  },
   text: {
     color: colors.white,
+    fontSize: 16,
+    fontFamily: "baloo-bold",
+  },
+  textPlay: {
+    color: colors.lightblue,
     fontSize: 16,
     fontFamily: "baloo-bold",
   },
