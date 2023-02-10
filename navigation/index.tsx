@@ -181,7 +181,7 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Stats"
+        name="StatsRoot"
         component={StatsStackScreen}
         options={{
           title: "Stats",

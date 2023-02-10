@@ -3,6 +3,8 @@ import { RootTabScreenProps } from "../types";
 import Container from "../components/Container";
 import Title from "../components/Title";
 import LeagueCard from "../components/LeagueCard";
+import { useDispatch } from "react-redux";
+import { setSelectedLeague } from "../context/slices/statsSlice";
 
 const data = [
   { id: "1", name: "Premier League" },
@@ -13,7 +15,9 @@ const data = [
 export default function StatsScreen({
   navigation,
 }: RootTabScreenProps<"Stats">) {
+  const dispatch = useDispatch();
   function navigateHandler(league: string) {
+    dispatch(setSelectedLeague(league));
     navigation.navigate("StatsTable", {
       league: league,
     });

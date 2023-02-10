@@ -44,6 +44,7 @@ export type RootTabParamList = {
       }
     | undefined;
   Typer: undefined;
+  StatsRoot: StatsTabParamList;
   Stats: undefined;
   StatsTable:
     | {

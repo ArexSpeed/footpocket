@@ -7,7 +7,11 @@ import Title from "../components/Title";
 import { colors } from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
 import axios from "axios";
-import { setStandings } from "../context/slices/statsSlice";
+import {
+  setStandingsEng,
+  setStandingsSpa,
+  setStandingsIta,
+} from "../context/slices/statsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../context/store";
 import { RAPID_API } from "@env";
@@ -25,33 +29,91 @@ export default function StatsScreen({
     setActiveTab(tab);
   }
 
-  const options = {
-    method: "GET",
-    url: "https://api-football-beta.p.rapidapi.com/standings",
-    params: { season: "2022", league: "39" },
-    headers: {
-      "X-RapidAPI-Key": RAPID_API,
-      "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com",
-    },
-  };
+  function getOptions(league: string) {
+    let leagueId = "39";
+    switch (league) {
+      case "Premier League":
+        leagueId = "39";
+        break;
+      case "Serie A":
+        leagueId = "135";
+        break;
+      case "La Liga":
+        leagueId = "140";
+        break;
+      default:
+        leagueId = "39";
+    }
+
+    const options = {
+      method: "GET",
+      url: "https://api-football-beta.p.rapidapi.com/standings",
+      params: { season: "2022", league: leagueId },
+      headers: {
+        "X-RapidAPI-Key": RAPID_API,
+        "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com",
+      },
+    };
+    console.log("options", options);
+    return options;
+  }
 
   useEffect(() => {
     console.log("start effect");
-    if (!stats.standings) {
-      console.log("is empty");
-      axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-          dispatch(
-            setStandings({
-              standings: response.data,
-            })
-          );
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+    console.log("stats in effect 1", stats);
+    if (stats.selectedLeague === "Premier League") {
+      if (!stats.standingsEng.fetched) {
+        console.log("is empty");
+        axios
+          .request(getOptions(stats.selectedLeague))
+          .then(function (response) {
+            console.log(response.data);
+            dispatch(
+              setStandingsEng({
+                standings: response.data,
+              })
+            );
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+    }
+    if (stats.selectedLeague === "La Liga") {
+      if (!stats.standingsSpa.fetched) {
+        console.log("is empty Spain");
+        axios
+          .request(getOptions(stats.selectedLeague))
+          .then(function (response) {
+            console.log(response.data);
+            dispatch(
+              setStandingsSpa({
+                standings: response.data,
+              })
+            );
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+    }
+    if (stats.selectedLeague === "Serie A") {
+      if (!stats.standingsIta.fetched) {
+        console.log("is empty Italy");
+        axios
+          .request(getOptions(stats.selectedLeague))
+          .then(function (response) {
+            console.log(response.data);
+            dispatch(
+              setStandingsIta({
+                standings: response.data,
+              })
+            );
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
     }
   }, []);
 
@@ -76,12 +138,28 @@ export default function StatsScreen({
   //   stats.standings.response[0].league.standings[0]
   // );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setTables([]);
-    stats?.standings?.response[0].league.standings[0].map((item: any, i: any) =>
-      //console.log(`Team ${i}:`, item)
-      setTables((prev: any) => [...prev, item])
-    );
+    if (
+      stats.selectedLeague === "Premier League" &&
+      stats.standingsEng.response
+    ) {
+      stats?.standingsEng?.response[0].league.standings[0].map(
+        (item: any, i: any) =>
+          //console.log(`Team ${i}:`, item)
+          setTables((prev: any) => [...prev, item])
+      );
+    }
+    if (stats.selectedLeague === "La Liga" && stats.standingsSpa.response) {
+      stats?.standingsSpa?.response[0].league.standings[0].map(
+        (item: any, i: any) => setTables((prev: any) => [...prev, item])
+      );
+    }
+    if (stats.selectedLeague === "Serie A" && stats.standingsIta.response) {
+      stats?.standingsIta?.response[0].league.standings[0].map(
+        (item: any, i: any) => setTables((prev: any) => [...prev, item])
+      );
+    }
   }, [stats]);
 
   return (
