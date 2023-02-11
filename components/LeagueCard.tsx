@@ -7,14 +7,12 @@ interface Props {
   onPress: () => void;
 }
 
-// RootTabScreenProps<"Simulator">
-
 function LeagueCard({ name, onPress }: Props) {
   return (
     <Pressable
       style={({ pressed }) => pressed && styles.pressed}
       onPress={onPress}
-      // android_ripple={{ color: "#ccc" }}
+      android_ripple={{ color: "#ccc" }}
     >
       <LinearGradient
         colors={colors.primaryGradient}

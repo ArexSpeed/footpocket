@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, FlatList, Text } from "react-native";
-import { colors } from "../constants/Colors";
+import { FlatList } from "react-native";
 import { RootTabScreenProps } from "../types";
 import Title from "../components/Title";
 import Tabs from "../components/Tabs";
@@ -58,35 +57,6 @@ export default function SimulatorScreen({
         keyExtractor={(item) => item.leagueId}
         numColumns={2}
       />
-
-      {/* <Button title="List" onPress={pressHandler} /> */}
     </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  leaguesContainer: {
-    flex: 1,
-    flexDirection: "column",
-    flexWrap: "wrap",
-    width: "100%",
-    backgroundColor: "red",
-  },
-  leagueItem: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 8,
-    height: 150,
-    width: 150,
-    borderRadius: 8,
-    elevation: 4,
-  },
-  leagueText: {
-    fontSize: 16,
-    fontFamily: "baloo",
-    color: colors.white,
-  },
-  loading: {
-    color: colors.white,
-  },
-});
