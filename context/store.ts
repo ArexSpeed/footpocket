@@ -1,16 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import messageReducer from './slices/messageSlice';
-import userReducer from './slices/userSlice';
-import simulatorReducer from './slices/simulatorSlice';
-import statsReducer from './slices/statsSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./slices/userSlice";
+import simulatorReducer from "./slices/simulatorSlice";
+import statsReducer from "./slices/statsSlice";
 
 export const store = configureStore({
   reducer: {
-    message: messageReducer,
     user: userReducer,
     simulator: simulatorReducer,
     stats: statsReducer,
-  }
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
