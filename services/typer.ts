@@ -5,13 +5,14 @@ interface Typer {
   league: string;
   users: [];
 }
+type User = {
+  userId: string;
+  userEmail: string;
+  userName: string;
+};
 type PayloadCreate = {
   leagueName: string;
-  user: {
-    userId: string;
-    userEmail: string;
-    userName: string;
-  };
+  user: User;
 };
 const BACKEND_URL =
   "https://footpoocket-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -98,4 +99,29 @@ export async function fetchOneTypers(leagueName: string) {
 
   const oneLeague = typers.find((typer) => typer.league === leagueName);
   return oneLeague;
+}
+
+export async function joinToLeague(
+  user: User,
+  leagueId: string,
+  leagueName: string
+) {
+  const payload = [
+    {
+      name: user.userName,
+      score: 0,
+      userEmail: user.userEmail,
+      userId: user.userId,
+      bets: [],
+    },
+  ];
+  const currentLeague = await fetchOneTypers(leagueName);
+  const newIndex = currentLeague?.users.length;
+  const response = await axios.patch(
+    `${BACKEND_URL}/typer/${leagueId}/users.json`,
+    payload
+  );
+  console.log("response joinToLeague", response);
+  const id = response.data;
+  return id;
 }

@@ -1,0 +1,97 @@
+[
+    {
+        "round": 1,
+        "games": [
+            {
+                "gameId": "r1g1",
+                "host": "Crystal Palace",
+                "guest": "Arsenal",
+                "hostScore": 0,
+                "guestScore": 2,
+                "hostBet": 0,
+                "guestBet": 3
+            },
+            {
+                "gameId": "r1g2",
+                "host": "Fulham",
+                "guest": "Liverpool",
+                "hostScore": 2,
+                "guestScore": 2,
+                "hostBet": 0,
+                "guestBet": 2
+            },
+            {
+                "gameId": "r1g3",
+                "host": "Bournemouth",
+                "guest": "Aston Villa",
+                "hostScore": 2,
+                "guestScore": 0,
+                "hostBet": 1,
+                "guestBet": 1
+            },
+            {
+                "gameId": "r1g4",
+                "host": "Newcastle",
+                "guest": "Nottingham Forest",
+                "hostScore": 2,
+                "guestScore": 0,
+                "hostBet": 0,
+                "guestBet": 0
+            },
+            {
+                "gameId": "r1g5",
+                "host": "Tottenham",
+                "guest": "Southampton",
+                "hostScore": 4,
+                "guestScore": 1,
+                "hostBet": 2,
+                "guestBet": 0
+            },
+            {
+                "gameId": "r1g6",
+                "host": "Leeds",
+                "guest": "Wolverhampton",
+                "hostScore": 2,
+                "guestScore": 1,
+                "hostBet": 2,
+                "guestBet": 2
+            },
+            {
+                "gameId": "r1g7",
+                "host": "Everton",
+                "guest": "Chelsea",
+                "hostScore": 0,
+                "guestScore": 1,
+                "hostBet": 0,
+                "guestBet": 1
+            },
+            {
+                "gameId": "r1g8",
+                "host": "Leicester",
+                "guest": "Brentford",
+                "hostScore": 2,
+                "guestScore": 2,
+                "hostBet": 2,
+                "guestBet": 1
+            },
+            {
+                "gameId": "r1g9",
+                "host": "Man United",
+                "guest": "Brighton",
+                "hostScore": 1,
+                "guestScore": 2,
+                "hostBet": 2,
+                "guestBet": 0
+            },
+            {
+                "gameId": "r1g10",
+                "host": "West Ham",
+                "guest": "Man City",
+                "hostScore": 0,
+                "guestScore": 2,
+                "hostBet": 0,
+                "guestBet": 3
+            }
+        ]
+    }
+]

@@ -1,0 +1,52 @@
+[
+    {
+        "gameId": "r2g1",
+        "host": "Aston Villa",
+        "guest": "Arsenal"
+    },
+    {
+        "gameId": "r2g2",
+        "host": "Brendford",
+        "guest": "Crystal Palace"
+    },
+    {
+        "gameId": "r2g3",
+        "host": "Wolverhampton",
+        "guest": "Bournemouth"
+    },
+    {
+        "gameId": "r2g4",
+        "host": "Brighton",
+        "guest": "Fulham"
+    },
+    {
+        "gameId": "r2g5",
+        "host": "Everton",
+        "guest": "Leeds"
+    },
+    {
+        "gameId": "r2g6",
+        "host": "Chelsea",
+        "guest": "Southampton"
+    },
+    {
+        "gameId": "r2g7",
+        "host": "Nottingham",
+        "guest": "Man City"
+    },
+    {
+        "gameId": "r2g8",
+        "host": "Newcastle",
+        "guest": "Liverpool"
+    },
+    {
+        "gameId": "r2g9",
+        "host": "Man United",
+        "guest": "Leicester"
+    },
+    {
+        "gameId": "r2g10",
+        "host": "Tottenham",
+        "guest": "West Ham"
+    }
+]
