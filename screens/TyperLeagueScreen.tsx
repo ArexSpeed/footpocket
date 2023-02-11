@@ -53,7 +53,6 @@ export default function TyperLeagueScreen({
 
   const isUserInLeague = useCallback(() => {
     const findUser = tableData?.find((usr) => usr.name === user.userName);
-    console.log("findUser", findUser);
     if (findUser) {
       return true;
     } else {
@@ -64,7 +63,6 @@ export default function TyperLeagueScreen({
   async function joinHandler() {
     if (user && leagueData) {
       const response = await joinToLeague(user, leagueData.id, leagueData.name);
-      console.log("joinToLeague", response);
     }
   }
   return (

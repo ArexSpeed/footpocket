@@ -20,7 +20,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      console.log("action", action);
       state.userId = action.payload.userId;
       state.userEmail = action.payload.userEmail;
       // add token later

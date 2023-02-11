@@ -31,14 +31,12 @@ export async function createTyperLeague(payload: PayloadCreate) {
     ],
   };
   const response = await axios.post(BACKEND_URL + "/typer.json", typerData);
-  console.log("response create Typer League", response);
   const id = response.data.name;
   return id;
 }
 
 export async function fetchAllTypers() {
   const response = await axios.get(`${BACKEND_URL}/typer.json`);
-  console.log("response typers:", response.data);
   const typers = [];
 
   for (const key in response.data) {
@@ -69,7 +67,6 @@ export async function fetchUserTypersLeague(userId: string) {
   }
 
   for (const key in response.data) {
-    console.log("for userTypes", userTypers);
     if (response.data[key].users.find((user: any) => user.userId === userId)) {
       const typerObj = {
         id: key,
@@ -77,7 +74,6 @@ export async function fetchUserTypersLeague(userId: string) {
         users: response.data[key].users,
       };
       userTypers.push(typerObj);
-      console.log("userTypes", userTypers);
     }
   }
   return userTypers;
@@ -85,7 +81,6 @@ export async function fetchUserTypersLeague(userId: string) {
 
 export async function fetchOneTypers(leagueName: string) {
   const response = await axios.get(`${BACKEND_URL}/typer.json`);
-  console.log("response typers:", response.data);
   const typers = [];
   for (const key in response.data) {
     const typerObj = {
@@ -121,7 +116,6 @@ export async function joinToLeague(
     `${BACKEND_URL}/typer/${leagueId}/users.json`,
     payload
   );
-  console.log("response joinToLeague", response);
   const id = response.data;
   return id;
 }

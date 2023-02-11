@@ -25,7 +25,6 @@ export function getStandings(league: string) {
       "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com",
     },
   };
-  console.log("options", options);
   return options;
 }
 
@@ -54,6 +53,5 @@ export function getFixtures(league: string) {
       "X-RapidAPI-Host": "https://api-football-beta.p.rapidapi.com",
     },
   };
-  console.log("options", options);
   return options;
 }
